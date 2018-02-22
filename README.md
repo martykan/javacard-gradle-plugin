@@ -1,10 +1,9 @@
 # JavaCard Gradle plugin
 
-[![Build Status](https://travis-ci.org/bertrandmartel/javacard-gradle-plugin.svg?branch=master)](https://travis-ci.org/bertrandmartel/javacard-gradle-plugin)
-[![Download](https://api.bintray.com/packages/bertrandmartel/maven/gradle-javacard/images/download.svg) ](https://bintray.com/bertrandmartel/maven/gradle-javacard/_latestVersion)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/fr.bmartel/gradle-javacard/badge.svg)](https://maven-badges.herokuapp.com/maven-central/fr.bmartel/gradle-javacard)
-[![Coverage Status](https://coveralls.io/repos/github/bertrandmartel/javacard-gradle-plugin/badge.svg?branch=master)](https://coveralls.io/github/bertrandmartel/javacard-gradle-plugin?branch=master)
-[![Javadoc](http://javadoc-badge.appspot.com/fr.bmartel/gradle-javacard.svg?label=javadoc)](http://javadoc-badge.appspot.com/fr.bmartel/gradle-javacard)
+[![Build Status](https://travis-ci.org/ph4r05/javacard-gradle-plugin.svg?branch=master)](https://travis-ci.org/ph4r05/javacard-gradle-plugin)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.klinec/gradle-javacard/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.klinec/gradle-javacard)
+[![Coverage Status](https://coveralls.io/repos/github/ph4r05/javacard-gradle-plugin/badge.svg?branch=master)](https://coveralls.io/github/ph4r05/javacard-gradle-plugin?branch=master)
+[![Javadoc](http://javadoc-badge.appspot.com/com.klinec/gradle-javacard.svg?label=javadoc)](http://javadoc-badge.appspot.com/com.klinec/gradle-javacard)
 [![License](http://img.shields.io/:license-mit-blue.svg)](LICENSE.md)
 
 A Gradle plugin for building JavaCard applets.
