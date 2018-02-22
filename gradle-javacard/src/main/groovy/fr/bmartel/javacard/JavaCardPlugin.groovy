@@ -229,9 +229,7 @@ class JavaCardPlugin implements Plugin<Project> {
      * @return
      */
     def configureClasspath(Project project, JavaCard extension) {
-        if (!hasDependencies(extension) &&
-                !project.repositories.findByName("jcardsim")) {
-
+        if (extension.config.addSurrogateJcardSimRepo && !project.repositories.findByName("jcardsim")) {
             def buildRepo = project.repositories.maven {
                 name 'jcardsim'
                 url "http://dl.bintray.com/bertrandmartel/maven"
@@ -262,9 +260,27 @@ class JavaCardPlugin implements Plugin<Project> {
                 extension.test.dependencies.dependencies.each() { dep ->
                     jcardsim dep
                 }
+
+                if (extension.config.addImplicitJcardSimJunit){
+                    logger.warn("addImplicitJcardSimJunit is deprecated and overridden by test dependencies configuration")
+                }
+                if (extension.config.addImplicitJcardSim){
+                    logger.warn("addImplicitJcardSim is deprecated and overridden by test dependencies configuration")
+                }
+
             } else {
-                jcardsim getDefaultJunit()
-                jcardsim getDefaultJcardSim()
+                if (!extension.config.addImplicitJcardSimJunit) {
+                    logger.warn("addImplicitJcardSimJunit is deprecated. To specify custom deps use test { dependencies {}}");
+                } else {
+                    jcardsim getDefaultJunit()
+                }
+
+                if (!extension.config.addImplicitJcardSim) {
+                    logger.warn("addImplicitJcardSim is deprecated. To specify custom deps use test { dependencies {}}")
+                } else {
+                    jcardsim extension.config.getJcardSim()
+                    //jcardsim getDefaultJcardSim()
+                }
             }
 
             compile sdkPath
