@@ -245,6 +245,20 @@ Note2 : you can add as many `local` or `remote` dependency as you want
      * task [Closure] - gradle task to create that will map the specified list of apdu to send
        * name [String] - task name
        * scripts [String...] - list of script's name
+  * test [Closure] - additional configuration for tests(*)
+     * dependencies [Closure] - holds test dependencies
+       * compile [String] - add a dependencies (ex: 'junit:junit:4.12')
+
+(*) If you specify at least one dependency, jcardsim & junit won't be automatically added so you will need to add them manually if you need them for example :
+
+```groovy
+test {
+    dependencies {
+        compile 'junit:junit:4.12'
+        compile 'com.licel:jcardsim:3.0.4'
+    }
+}
+```
 
 ## Compatibility
 

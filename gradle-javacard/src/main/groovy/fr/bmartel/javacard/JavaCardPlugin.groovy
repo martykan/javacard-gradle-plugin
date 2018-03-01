@@ -183,6 +183,23 @@ class JavaCardPlugin implements Plugin<Project> {
         }
     }
 
+    static def getDefaultJcardSim() {
+        return 'com.licel:jcardsim:3.0.4'
+    }
+    
+    static def getDefaultJunit() {
+        return 'junit:junit:4.12'
+    }
+
+    static def hasDependencies(JavaCard extension) {
+        if (extension.test != null &&
+                extension.test.dependencies != null &&
+                extension.test.dependencies.dependencies.size() > 0) {
+            return true
+        }
+        return false
+    }
+
     /**
      * Tries to determine jcardsim version to use
      * @param properties
@@ -211,9 +228,10 @@ class JavaCardPlugin implements Plugin<Project> {
      * @param sdk JC SDK path
      * @return
      */
-    def configureClasspath(Project project, extension) {
+    def configureClasspath(Project project, JavaCard extension) {
+        if (!hasDependencies(extension) &&
+                !project.repositories.findByName("jcardsim")) {
 
-        if (extension.config.addSurrogateJcardSimRepo && !project.repositories.findByName("jcardsim")) {
             def buildRepo = project.repositories.maven {
                 name 'jcardsim'
                 url "http://dl.bintray.com/bertrandmartel/maven"
@@ -240,12 +258,13 @@ class JavaCardPlugin implements Plugin<Project> {
         project.dependencies {
             sdk sdkPath
 
-            if (extension.config.addImplicitJcardSimJunit) {
-                jcardsim 'junit:junit:4.12'
-            }
-            if (extension.config.addImplicitJcardSim) {
-                jcardsim extension.config.getJcardSim()
-                logger.debug("jcardsim implicit added")
+            if (hasDependencies(extension)) {
+                extension.test.dependencies.dependencies.each() { dep ->
+                    jcardsim dep
+                }
+            } else {
+                jcardsim getDefaultJunit()
+                jcardsim getDefaultJcardSim()
             }
 
             compile sdkPath
@@ -277,7 +296,7 @@ class JavaCardPlugin implements Plugin<Project> {
      * @param extension gradle extension
      * @return
      */
-    def createInstallTask(Project project, extension) {
+    def createInstallTask(Project project, JavaCard extension) {
         def install = project.tasks.create(name: INSTALL_TASK, type: GpExec)
         def args = ['-relax']
         extension.config.caps.each { capItem ->
@@ -306,7 +325,7 @@ class JavaCardPlugin implements Plugin<Project> {
      * @param project gradle project
      * @return
      */
-    def createListTask(Project project, extension) {
+    def createListTask(Project project, JavaCard extension) {
 
         def args = ['-l']
 
