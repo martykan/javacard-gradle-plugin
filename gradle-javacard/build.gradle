@@ -3,7 +3,7 @@
 apply plugin: 'groovy'
 
 group 'com.klinec'
-version '1.5.7'
+version '1.5.8'
 
 apply plugin: 'java'
 apply plugin: 'maven'
