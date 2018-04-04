@@ -261,21 +261,21 @@ class JavaCardPlugin implements Plugin<Project> {
                 }
 
                 if (extension.config.addImplicitJcardSimJunit){
-                    logger.info("addImplicitJcardSimJunit is deprecated and overridden by test dependencies configuration")
+                    logger.info("addImplicitJcardSimJunit is overridden by test dependencies configuration")
                 }
                 if (extension.config.addImplicitJcardSim){
-                    logger.info("addImplicitJcardSim is deprecated and overridden by test dependencies configuration")
+                    logger.info("addImplicitJcardSim is overridden by test dependencies configuration")
                 }
 
             } else {
                 if (!extension.config.addImplicitJcardSimJunit) {
-                    logger.info("addImplicitJcardSimJunit is deprecated. To specify custom deps use test { dependencies {}}");
+                    logger.info("addImplicitJcardSimJunit disabled junit inclusion");
                 } else {
                     jcardsim getDefaultJunit()
                 }
 
                 if (!extension.config.addImplicitJcardSim) {
-                    logger.info("addImplicitJcardSim is deprecated. To specify custom deps use test { dependencies {}}")
+                    logger.info("addImplicitJcardSim disabled jcardsim inclusion")
                 } else {
                     jcardsim extension.config.getJcardSim()
                     // jcardsim getDefaultJcardSim()
