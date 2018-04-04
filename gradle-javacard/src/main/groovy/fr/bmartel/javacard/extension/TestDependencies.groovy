@@ -5,9 +5,9 @@ class TestDependencies {
     /**
      * list of dependencies to compile.
      */
-    List<String> dependencies = []
+    List<Object> dependencies = []
 
-    void compile(String dependency) {
+    void compile(Object dependency) {
         dependencies.add(dependency)
     }
 }
