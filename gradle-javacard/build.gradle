@@ -182,7 +182,7 @@ sourceSets {
         java {
             srcDirs = [
                     'src/main/java/ant-javacard/src/main/java',
-                    'src/main/java/global-platform-pro/src',
+                    'src/main/java/global-platform-pro/src/main/java',
                     'src/main/java/apdu4j/src',
                     'src/main/java/jnasmartcardio/src/main/java'
             ]
