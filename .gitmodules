@@ -3,7 +3,7 @@
 	url = git://github.com/martinpaljak/ant-javacard.git
 [submodule "gradle-javacard/src/main/java/global-platform-pro"]
 	path = gradle-javacard/src/main/java/global-platform-pro
-	url = git://github.com/martinpaljak/GlobalPlatformPro.git
+	url=git://github.com/ph4r05/GlobalPlatformPro.git
 [submodule "gradle-javacard/src/main/java/apdu4j"]
 	path = gradle-javacard/src/main/java/apdu4j
 	url = git://github.com/martinpaljak/apdu4j.git
