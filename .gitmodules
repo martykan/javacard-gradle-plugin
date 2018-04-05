@@ -1,6 +1,6 @@
 [submodule "gradle-javacard/src/main/java/ant-javacard"]
 	path = gradle-javacard/src/main/java/ant-javacard
-	url = git://github.com/martinpaljak/ant-javacard.git
+url=git://github.com/ph4r05/ant-javacard.git
 [submodule "gradle-javacard/src/main/java/global-platform-pro"]
 	path = gradle-javacard/src/main/java/global-platform-pro
 	url=git://github.com/ph4r05/GlobalPlatformPro.git
