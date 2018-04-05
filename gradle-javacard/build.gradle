@@ -117,6 +117,9 @@ def gitUrl = 'https://github.com/ph4r05/javacard-gradle-plugin.git'
 //}
 
 signing {
+    required {
+        gradle.taskGraph.hasTask("uploadArchives")
+    }
     sign configurations.archives
 }
 
