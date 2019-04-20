@@ -287,6 +287,10 @@ class JavaCardPlugin implements Plugin<Project> {
             testCompile testClasspath
         }
 
+        // Exclude JC API for test runtime classpath as JCardSim embeds own version
+        project.sourceSets.test.runtimeClasspath = project.sourceSets.test.runtimeClasspath.filter {
+            (it.path != sdkPath.getAsPath()) }
+
         project.test.testLogging {
             events "passed", "skipped", "failed"
         }
