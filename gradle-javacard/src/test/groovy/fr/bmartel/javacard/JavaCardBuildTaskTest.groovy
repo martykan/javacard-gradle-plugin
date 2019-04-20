@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  * <p/>
- * Copyright (c) 2017 Bertrand Martel
+ * Copyright (c) 2017-2018 Bertrand Martel
  * <p/>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -49,10 +49,6 @@ class JavaCardBuildTaskTest extends CommonTest {
                         aid '01:02:03:04:05:06:07:08:09:01:02'
                     }
                     dependencies {
-                        local {
-                            jar StaticConfig.DEPENDENCY_PATH
-                            exps StaticConfig.EXP_PATH
-                        }
                     }
                 }
             }

@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  * <p/>
- * Copyright (c) 2017 Bertrand Martel
+ * Copyright (c) 2017-2018 Bertrand Martel
  * <p/>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -27,6 +27,7 @@ package fr.bmartel.javacard.gp
 import org.gradle.api.Project
 import org.gradle.api.file.FileCollection
 import org.gradle.api.tasks.JavaExec
+import pro.javacard.gp.GPTool
 
 /**
  * Task type that inherits JavaExec.
@@ -52,11 +53,8 @@ class GpExec extends JavaExec {
      * @return
      */
     def getGpClassPath(Project project) {
-
-        FileCollection gproClasspath = project.files(new File(pro.javacard.gp.GPTool.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()))
-
+        FileCollection gproClasspath = project.files(new File(GPTool.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()))
         gproClasspath += project.sourceSets.main.runtimeClasspath
-
         return gproClasspath
     }
 }

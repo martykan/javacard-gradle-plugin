@@ -1,7 +1,7 @@
 /*
  * The MIT License (MIT)
  * <p/>
- * Copyright (c) 2017 Bertrand Martel
+ * Copyright (c) 2017-2018 Bertrand Martel
  * <p/>
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
@@ -34,6 +34,7 @@ import org.gradle.api.Task
 import org.gradle.api.plugins.JavaPlugin
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import pro.javacard.gp.GPTool
 
 /**
  * JavaCard plugin.
@@ -53,20 +54,6 @@ class JavaCardPlugin implements Plugin<Project> {
     static String GLOBAL_PLATFORM_GROUP = 'global platform'
 
     Task buildTask
-
-    /**
-     * dependency of Global Platform Pro
-     */
-    def depList = [
-            'net.sf.jopt-simple:jopt-simple:5.0.4',
-            'com.google.guava:guava:18.0',
-            'org.bouncycastle:bcprov-jdk15on:1.57',
-            'org.bouncycastle:bcprov-jdk14:1.50',
-            'com.googlecode.json-simple:json-simple:1.1.1',
-            'net.java.dev.jna:jna:4.2.1',
-            'org.slf4j:slf4j-simple:1.7.25',
-            'org.apache.ant:ant:1.8.2'
-    ]
 
     void apply(Project project) {
 
@@ -100,8 +87,8 @@ class JavaCardPlugin implements Plugin<Project> {
                 extension.config.jcardSim = getJcardSim(properties)
             }
 
-            logger.debug("jckit location : " + extension.config.getJcKit())
-            logger.debug("jcardsim: " + extension.config.getJcardSim())
+            logger.debug("jckit location : ${extension.config.getJcKit()}")
+            logger.debug("jcardsim: ${extension.config.getJcardSim()}")
 
             configureClasspath(project, extension)
 
@@ -149,44 +136,18 @@ class JavaCardPlugin implements Plugin<Project> {
             description = 'Create CAP file(s) for installation on a smart card'
         }
 
-        def preBuild = project.tasks.create('preBuild', {
-            def imlFile = project.file(project.name + ".iml")
-            try {
-                def parsedXml = (new XmlParser()).parse(imlFile)
-                if (parsedXml != null && parsedXml.component.size() > 0 && parsedXml.component[1] != null) {
-                    def testNode = parsedXml.component[1].orderEntry.find { it.'@name' =~ /^api*/ }
-                    parsedXml.component[1].remove(testNode)
-                    new Node(parsedXml.component[1], 'orderEntry', [
-                            'type' : testNode.attributes().get("type"),
-                            'name' : testNode.attributes().get("name"),
-                            'level': testNode.attributes().get("level")
-                    ])
-                    groovy.xml.XmlUtil.serialize(parsedXml, new FileOutputStream(imlFile))
-                }
-            } catch (FileNotFoundException e) {
-            }
-        })
-
-        //task ordering
-        preBuild.finalizedBy buildTask
-        project.classes.finalizedBy preBuild
-
         //add property : javacard output directory
-        project.ext.javacardDir = project.buildDir.absolutePath + File.separator + "javacard"
+        project.ext.javacardDir = "${project.buildDir.absolutePath}${File.separator}javacard"
     }
 
-    def initDependencies(Project project) {
+    static def initDependencies(Project project) {
         project.repositories.add(project.repositories.mavenCentral())
-
-        depList.each { item ->
-            project.dependencies.add("compile", item)
-        }
     }
 
     static def getDefaultJcardSim() {
         return 'com.licel:jcardsim:3.0.4'
     }
-    
+
     static def getDefaultJunit() {
         return 'junit:junit:4.12'
     }
@@ -238,7 +199,7 @@ class JavaCardPlugin implements Plugin<Project> {
             logger.debug("jcardsim repo added")
         }
 
-        def testClasspath = project.configurations.jcardsim + project.files(new File(pro.javacard.gp.GPTool.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()))
+        def testClasspath = project.configurations.jcardsim + project.files(new File(GPTool.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()))
 
         def sdkPath = project.files(SdkUtils.getApiPath(extension.config.getJcKit(), logger))
 
@@ -317,15 +278,15 @@ class JavaCardPlugin implements Plugin<Project> {
      */
     def createInstallTask(Project project, JavaCard extension) {
         def install = project.tasks.create(name: INSTALL_TASK, type: GpExec)
-        def args = ['-relax']
+        def args = []
         extension.config.caps.each { capItem ->
             args.add('--delete')
             args.add(Utility.formatByteArray(capItem.aid))
             args.add('--install')
 
-            File file = new File(capItem.output);
+            File file = new File(capItem.output)
             if (!file.isAbsolute()) {
-                args.add(new File(project.buildDir.absolutePath + File.separator + "javacard" + File.separator + capItem.output).absolutePath)
+                args.add(new File("${project.buildDir.absolutePath}${File.separator}javacard${File.separator}${capItem.output}").absolutePath)
             } else {
                 args.add(new File(capItem.output).absolutePath)
             }
@@ -383,7 +344,7 @@ class JavaCardPlugin implements Plugin<Project> {
             description = desc
             args(arguments)
             doFirst {
-                println('gp ' + arguments)
+                println("gp ${arguments}")
             }
         }
     }
