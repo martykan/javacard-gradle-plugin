@@ -140,6 +140,9 @@ class JavaCardBuildTask extends DefaultTask {
         if (capItem.export?.trim()) {
             map["export"] = capItem.export
         }
+        if (capItem.jar?.trim()) {
+            map["jar"] = capItem.jar
+        }
         if (capItem.jca?.trim()) {
             map["jca"] = capItem.jca
         }
@@ -294,6 +297,10 @@ class JavaCardBuildTask extends DefaultTask {
                 capItem.export = "${jcBuildDir}${File.separator}${Utility.removeExtension(capItem.output)}.exp"
                 logger.debug("update export path to $capItem.export")
             }
+            if (!capItem.jar?.trim()) {
+                capItem.jar = "${jcBuildDir}${File.separator}${Utility.removeExtension(capItem.output)}.jar"
+                logger.debug("update jar path to $capItem.jar")
+            }
             capItem.output = "${jcBuildDir}${File.separator}${capItem.output}"
         } else {
             if (!capItem.jca?.trim()) {
@@ -304,6 +311,11 @@ class JavaCardBuildTask extends DefaultTask {
             if (!capItem.export?.trim()) {
                 capItem.export = "${jcBuildDir}${File.separator}${Utility.removeExtension(capItem.output)}.exp"
                 logger.debug("update export path to $capItem.export")
+                Utility.createFolder(jcBuildDir)
+            }
+            if (!capItem.jar?.trim()) {
+                capItem.jar = "${jcBuildDir}${File.separator}${Utility.removeExtension(capItem.output)}.jar"
+                logger.debug("update jar path to $capItem.jar")
                 Utility.createFolder(jcBuildDir)
             }
         }
@@ -318,6 +330,11 @@ class JavaCardBuildTask extends DefaultTask {
         if (!exportFile.isAbsolute()) {
             capItem.export = "${jcBuildDir}${File.separator}${capItem.export}"
             logger.debug("update export path to $capItem.export")
+        }
+        File jarFile = new File(capItem.jar)
+        if (!jarFile.isAbsolute()) {
+            capItem.jar = "${jcBuildDir}${File.separator}${capItem.jar}"
+            logger.debug("update jar path to $capItem.jar")
         }
     }
 

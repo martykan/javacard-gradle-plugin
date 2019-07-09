@@ -83,6 +83,11 @@ class Cap {
     String export
 
     /**
+     * path (folder) where to place the JAR and generated EXP file. Optional.
+     */
+    String jar
+
+    /**
      * path where to save the generated JavaCard Assembly (JCA) file. Optional.
      */
     String jca
@@ -164,6 +169,10 @@ class Cap {
 
     void export(String export) {
         this.export = export
+    }
+
+    void jar(String jar) {
+        this.jar = jar
     }
 
     void jca(String jca) {
