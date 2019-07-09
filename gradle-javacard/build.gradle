@@ -3,7 +3,7 @@
 apply plugin: 'groovy'
 
 group 'com.klinec'
-version '1.6.4'
+version '1.6.5'
 
 apply plugin: 'java'
 apply plugin: 'maven'
@@ -14,11 +14,16 @@ sourceCompatibility = '1.7'
 
 repositories {
     mavenCentral()
+    //mavenLocal()
 }
 
 dependencies {
     compile gradleApi()
     compile 'com.github.martinpaljak:ant-javacard:18.07.12'
+    //compile 'com.github.martinpaljak:ant-javacard:19.09.12'
+    //compile 'com.github.martinpaljak:capfile:19.03.04'
+//    compile 'com.github.martinpaljak:ant-javacard:18.09.25'
+//    compile 'com.github.martinpaljak:ant-javacard:18.07.12'
     compile 'com.github.martinpaljak:globalplatformpro:18.09.14'
 
     testCompile 'junit:junit:4.11'

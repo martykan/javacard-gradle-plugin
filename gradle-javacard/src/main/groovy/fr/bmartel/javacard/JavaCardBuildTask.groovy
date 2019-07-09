@@ -298,7 +298,7 @@ class JavaCardBuildTask extends DefaultTask {
                 logger.debug("update export path to $capItem.export")
             }
             if (!capItem.jar?.trim()) {
-                capItem.jar = "${jcBuildDir}${File.separator}${Utility.removeExtension(capItem.output)}.jar"
+                capItem.jar = "${capItem.export}/${capItem.packageName ?: Utility.removeExtension(capItem.output)}.jar"
                 logger.debug("update jar path to $capItem.jar")
             }
             capItem.output = "${jcBuildDir}${File.separator}${capItem.output}"
@@ -314,7 +314,7 @@ class JavaCardBuildTask extends DefaultTask {
                 Utility.createFolder(jcBuildDir)
             }
             if (!capItem.jar?.trim()) {
-                capItem.jar = "${jcBuildDir}${File.separator}${Utility.removeExtension(capItem.output)}.jar"
+                capItem.jar = "${capItem.export}/${capItem.packageName ?: Utility.removeExtension(capItem.output)}.jar"
                 logger.debug("update jar path to $capItem.jar")
                 Utility.createFolder(jcBuildDir)
             }
