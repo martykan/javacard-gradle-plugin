@@ -90,7 +90,7 @@ class Utility {
      * @param args
      * @return
      */
-    static String[] addKeyArg(key, defaultKey, args) {
+    static def addKeyArg(key, defaultKey, args) {
         if (key != null || defaultKey != null) {
 
             //set key-enc if specified otherwise set default key
@@ -119,6 +119,21 @@ class Utility {
                 args.add('-key-kek')
                 args.add(Utility.formatByteArray(defaultKey))
             }
+        }
+        return args
+    }
+
+    /**
+     * Adds additional GpPro arguments as specified by configuration.
+     * Now supports only debugging flag.
+     *
+     * @param ext
+     * @param args
+     * @return
+     */
+    static def addGpProArgs(ext, args) {
+        if (ext.config.debugGpPro) {
+            args.add('-d')
         }
         return args
     }

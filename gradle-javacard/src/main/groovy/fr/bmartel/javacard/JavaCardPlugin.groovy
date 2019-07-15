@@ -295,7 +295,7 @@ class JavaCardPlugin implements Plugin<Project> {
         install.dependsOn buildTask
 
         args = Utility.addKeyArg(extension.key, extension.defaultKey, args)
-
+        args = Utility.addGpProArgs(extension, args)
         createGpExec(install, GLOBAL_PLATFORM_GROUP, 'install cap file', args)
     }
 
@@ -310,6 +310,7 @@ class JavaCardPlugin implements Plugin<Project> {
         def args = ['-l']
 
         args = Utility.addKeyArg(extension.key, extension.defaultKey, args)
+        args = Utility.addGpProArgs(extension, args)
 
         def script = project.tasks.create(name: LIST_TASK, type: GpExec)
         createGpExec(script, GLOBAL_PLATFORM_GROUP, 'list applets', args)

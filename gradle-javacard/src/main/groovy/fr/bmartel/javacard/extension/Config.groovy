@@ -43,6 +43,7 @@ class Config {
     boolean addSurrogateJcardSimRepo = true
     boolean addImplicitJcardSim = true
     boolean addImplicitJcardSimJunit = true
+    boolean debugGpPro = false
 
     /**
      * log level to set to "VERBOSE","DEBUG","INFO","WARN" or "ERROR", default is "INFO"
@@ -85,6 +86,10 @@ class Config {
 
     void addImplicitJcardSimJunit(Boolean addIt) {
         this.addImplicitJcardSimJunit = addIt
+    }
+
+    void debugGpPro(Boolean val) {
+        this.debugGpPro = val
     }
 
     /**
