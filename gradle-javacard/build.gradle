@@ -3,7 +3,7 @@
 apply plugin: 'groovy'
 
 group 'com.klinec'
-version '1.6.7'
+version '1.6.8'
 
 apply plugin: 'java'
 apply plugin: 'maven'
@@ -19,12 +19,10 @@ repositories {
 
 dependencies {
     compile gradleApi()
-    compile 'com.github.martinpaljak:ant-javacard:18.07.12'
-    //compile 'com.github.martinpaljak:ant-javacard:19.09.12'
-    //compile 'com.github.martinpaljak:capfile:19.03.04'
-//    compile 'com.github.martinpaljak:ant-javacard:18.09.25'
-//    compile 'com.github.martinpaljak:ant-javacard:18.07.12'
-    compile 'com.github.martinpaljak:globalplatformpro:18.09.14'
+    compile 'com.github.martinpaljak:ant-javacard:19.05.08'
+    compile 'com.github.martinpaljak:gppro:19.06.16'
+    compile 'com.github.martinpaljak:gptool:19.06.16'
+    compile 'com.github.martinpaljak:globalplatformpro:19.06.16'
 
     testCompile 'junit:junit:4.11'
     testCompile 'org.hamcrest:hamcrest-all:1.3'
