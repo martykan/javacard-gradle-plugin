@@ -29,14 +29,16 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'fr.bmartel:gradle-javacard:1.5.6'
+        classpath 'com.klinec:gradle-javacard:1.6.8'
     }
 }
 
 apply plugin: 'javacard'
 
 dependencies {
-    compile 'com.github.martinpaljak:globalplatformpro:18.09.14'
+    compile 'com.github.martinpaljak:gppro:19.06.16'
+    compile 'com.github.martinpaljak:gptool:19.06.16'
+    compile 'com.github.martinpaljak:globalplatformpro:19.06.16'
 }
 
 javacard {
