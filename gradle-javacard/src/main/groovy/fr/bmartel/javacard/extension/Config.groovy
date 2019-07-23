@@ -51,6 +51,11 @@ class Config {
     String logLevel = 'INFO'
 
     /**
+     * Classpath for Ant
+     */
+    String antClassPath = null
+
+    /**
      * list of cap files to build.
      */
     List<Cap> caps = []
@@ -66,6 +71,10 @@ class Config {
 
     void jckit(String path) {
         this.jckit = path
+    }
+
+    void antClassPath(String classPath) {
+        this.antClassPath = classPath
     }
 
     void logLevel(String logLevel) {

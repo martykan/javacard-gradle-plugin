@@ -112,30 +112,19 @@ class Utility {
             }
 
             //set key-kek if specified otherwise set default key
-            if (key != null && key.keyKek != null) {
-                args.add('--key-kek')
-                args.add(Utility.formatByteArray(key.keyKek))
+            def kek = key == null ? null : (key.keyKek ?: key.keyDek ?: null)
+            if (kek != null) {
+                args.add('--key-dek')
+                args.add(Utility.formatByteArray(kek))
             } else if (defaultKey != null) {
-                args.add('--key-kek')
+                args.add('--key-dek')
                 args.add(Utility.formatByteArray(defaultKey))
             }
 
-            //set key if specified otherwise set default key
+            //set master key if specified otherwise set default key
             if (key != null && key.keyMaster != null) {
                 args.add('--key')
                 args.add(Utility.formatByteArray(key.keyMaster))
-            } else if (defaultKey != null) {
-                args.add('--key')
-                args.add(Utility.formatByteArray(defaultKey))
-            }
-
-            //set key-dek if specified otherwise set default key
-            if (key != null && key.keyDek != null) {
-                args.add('--key-dek')
-                args.add(Utility.formatByteArray(key.keyDek))
-            } else if (defaultKey != null) {
-                args.add('--key-dek')
-                args.add(Utility.formatByteArray(defaultKey))
             }
         }
         return args

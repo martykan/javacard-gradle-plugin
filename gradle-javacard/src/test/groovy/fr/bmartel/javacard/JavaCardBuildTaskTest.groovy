@@ -35,7 +35,7 @@ import org.junit.Test
  */
 class JavaCardBuildTaskTest extends CommonTest {
 
-    Closure buildSdkConf(sdk, appletName) {
+    Closure buildSdkConf(sdk, appletName, verify_=true) {
         return {
             config {
                 cap {
@@ -44,6 +44,7 @@ class JavaCardBuildTaskTest extends CommonTest {
                     version '0.1'
                     aid '01:02:03:04:05:06:07:08:09'
                     output appletName + '.cap'
+                    verify verify_
                     applet {
                         className 'fr.bmartel.javacard.HelloWorld'
                         aid '01:02:03:04:05:06:07:08:09:01:02'
@@ -82,7 +83,7 @@ class JavaCardBuildTaskTest extends CommonTest {
 
     @Test
     void sdkVersion212() {
-        runBuildTask(buildSdkConf(StaticConfig.getSdkPath("jc212_kit"), "applet"))
+        runBuildTask(buildSdkConf(StaticConfig.getSdkPath("jc212_kit"), "applet", false))
     }
 
     @Test

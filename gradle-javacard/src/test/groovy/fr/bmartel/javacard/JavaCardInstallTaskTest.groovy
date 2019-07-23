@@ -25,7 +25,7 @@ class JavaCardInstallTaskTest extends CommonTest {
                                         '--install', project.buildDir.absolutePath + File.separator + "javacard" + File.separator + "applet.cap",
                                         '--key-enc', '404142434445464748494A4B4C4D4E4F',
                                         '--key-mac', '404142434445464748494A4B4C4D4E4F',
-                                        '--key-kek', '404142434445464748494A4B4C4D4E4F'
+                                        '--key-dek', '404142434445464748494A4B4C4D4E4F'
         ])
         assertEquals(installTask.main, 'pro.javacard.gp.GPTool')
         //installTask.exec()
