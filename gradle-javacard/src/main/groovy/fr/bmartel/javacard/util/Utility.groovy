@@ -95,28 +95,46 @@ class Utility {
 
             //set key-enc if specified otherwise set default key
             if (key != null && key.keyEnc != null) {
-                args.add('-key-enc')
+                args.add('--key-enc')
                 args.add(Utility.formatByteArray(key.keyEnc))
             } else if (defaultKey != null) {
-                args.add('-key-enc')
+                args.add('--key-enc')
                 args.add(Utility.formatByteArray(defaultKey))
             }
 
             //set key-mac if specified otherwise set default key
             if (key != null && key.keyMac != null) {
-                args.add('-key-mac')
+                args.add('--key-mac')
                 args.add(Utility.formatByteArray(key.keyMac))
             } else if (defaultKey != null) {
-                args.add('-key-mac')
+                args.add('--key-mac')
                 args.add(Utility.formatByteArray(defaultKey))
             }
 
             //set key-kek if specified otherwise set default key
             if (key != null && key.keyKek != null) {
-                args.add('-key-kek')
+                args.add('--key-kek')
                 args.add(Utility.formatByteArray(key.keyKek))
             } else if (defaultKey != null) {
-                args.add('-key-kek')
+                args.add('--key-kek')
+                args.add(Utility.formatByteArray(defaultKey))
+            }
+
+            //set key if specified otherwise set default key
+            if (key != null && key.keyMaster != null) {
+                args.add('--key')
+                args.add(Utility.formatByteArray(key.keyMaster))
+            } else if (defaultKey != null) {
+                args.add('--key')
+                args.add(Utility.formatByteArray(defaultKey))
+            }
+
+            //set key-dek if specified otherwise set default key
+            if (key != null && key.keyDek != null) {
+                args.add('--key-dek')
+                args.add(Utility.formatByteArray(key.keyDek))
+            } else if (defaultKey != null) {
+                args.add('--key-dek')
                 args.add(Utility.formatByteArray(defaultKey))
             }
         }

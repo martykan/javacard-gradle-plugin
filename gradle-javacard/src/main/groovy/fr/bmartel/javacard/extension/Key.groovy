@@ -32,6 +32,16 @@ package fr.bmartel.javacard.extension
 class Key {
 
     /**
+     * key Master
+     */
+    String keyMaster
+
+    /**
+     * key DEK
+     */
+    String keyDek
+
+    /**
      * key ENC
      */
     String keyEnc
@@ -57,4 +67,13 @@ class Key {
     void kek(String key) {
         this.keyKek = key
     }
+
+    void master(String key){
+        this.keyMaster = key
+    }
+
+    void dek(String key){
+        this.keyDek = key
+    }
+
 }
