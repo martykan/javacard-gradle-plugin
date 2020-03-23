@@ -10,4 +10,8 @@ class TestDependencies {
     void compile(Object dependency) {
         dependencies.add(dependency)
     }
+
+    void implementation(Object dependency) {
+        dependencies.add(dependency)
+    }
 }

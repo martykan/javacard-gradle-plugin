@@ -29,7 +29,7 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.klinec:gradle-javacard:1.6.8'
+        classpath 'com.klinec:gradle-javacard:1.6.9'
     }
 }
 
@@ -220,6 +220,7 @@ Note2 : you can add as many `local` or `remote` dependency as you want
     * logLevel [String] - log level of ant-javacard task ("VERBOSE","DEBUG","INFO","WARN","ERROR"). default : "INFO"
     * cap [Closure] - construct a CAP file **Required**
       * jckit [String] - path to the JavaCard SDK to be used for this CAP. *Optional if javacard defines one, required otherwise*
+      * targetsdk [String] - path to the target JavaCard SDK to be used for this CAP. Optional, value of jckit used by default. Allows to use a more recent converter to target older JavaCard platforms.
       * sources [String] - path to Java source code, to be compiled against the current JavaCard SDK. **Required**
       * findSources [boolean] - default:true, if true the sources are determined automatically. The first existing source dir in source sets is taken
       * defaultSources [boolean] - default:true, if true the first source dir from the source set is used. Otherwise the most recet (last)
@@ -229,10 +230,12 @@ Note2 : you can add as many `local` or `remote` dependency as you want
       * aid [String] - AID (hex) of the package. Recommended - or set to the 5 first bytes of the applet AID if left unspecified.
       * output [String] - path where to save the generated CAP file. if a filename or a non-absolute path is referenced, the output will be in `build/javacard/{output}` **Required**
       * export [String] - path (folder) where to place the JAR and generated EXP file. Default output directory is `build/javacard`. Filename depends on `output` filename if referenced. Optional.
+      * jar [String] - path where to save the generated archive JAR file. Optional.
       * jca [String] - path where to save the generated JavaCard Assembly (JCA) file. Default output directory is `build/javacard`. Filename depends on `output` filename if referenced. Optional.
       * verify [boolean] - if set to false, disables verification of the resulting CAP file with offcardeverifier. Optional.
       * debug [boolean] - if set to true, generates debug CAP components. Optional.
       * ints [boolean] - if set to true, enables support for 32 bit int type. Optional.
+      * javaversion [string] - override the Java source and target version. Optional.
       * applet [Closure] - for creating an applet inside the CAP
         * className [String] - class of the Applet where install() method is defined. **Required**
         * aid [String] - AID (hex) of the applet. Recommended - or set to package aid+i where i is index of the applet definition in the build.xml instruction

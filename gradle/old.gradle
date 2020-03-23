@@ -1,0 +1,82 @@
+//bintray {
+//    user = "$System.env.BINTRAY_USER"
+//    key = "$System.env.BINTRAY_KEY"
+//
+//    configurations = ['archives'] //When uploading configuration files
+//
+//    dryRun = false //Whether to run this as dry-run, without deploying
+//    publish = true //If version should be auto published after an upload
+//
+//    pkg {
+//        repo = 'maven'
+//        name = 'gradle-javacard'
+//        desc = 'JavaCard gradle plugin'
+//        websiteUrl = siteUrl
+//        issueTrackerUrl = 'https://github.com/ph4r05/javacard-gradle-plugin/issues'
+//        vcsUrl = gitUrl
+//        licenses = ['MIT']
+//        labels = ['javacard', 'gradle-plugin']
+//        publicDownloadNumbers = true
+//
+//        version {
+//            name = project.version //Bintray logical version name
+//            vcsTag = project.version
+//
+//            gpg {
+//                sign = true
+//                passphrase = "$System.env.GPG_PASSPHRASE"
+//            }
+//
+//            mavenCentralSync {
+//                sync = true
+//                //Optional (true by default). Determines whether to sync the version to Maven Central.
+//                user = "$System.env.MAVEN_CENTRAL_USER_TOKEN" //OSS user token
+//                password = "$System.env.MAVEN_CENTRAL_PASSWORD" //OSS user password
+//                close = '1'
+//                //Optional property. By default the staging repository is closed and artifacts are released to Maven Central. You can optionally turn this behaviour off (by puting 0 as value) and release the version manually.
+//            }
+//        }
+//    }
+//}
+//
+//install {
+//    repositories.mavenInstaller {
+//        pom {
+//            project {
+//                description 'JavaCard gradle plugin'
+//                packaging 'jar'
+//                name 'gradle-javacard'
+//                url siteUrl
+//                licenses {
+//                    license {
+//                        name 'The MIT License'
+//                        url 'https://github.com/ph4r05/javacard-gradle-plugin/blob/master/LICENSE.md'
+//                    }
+//                }
+//                developers {
+//                    developer {
+//                        id 'bertrandmartel'
+//                        name 'Bertrand Martel'
+//                        email 'bmartel.fr@gmail.com'
+//                    }
+//                    developer {
+//                        id 'ph4r05'
+//                        name 'Dusan Klinec'
+//                        email 'dusan.klinec@gmail.com'
+//                    }
+//                }
+//                scm {
+//                    connection 'https://github.com/ph4r05/javacard-gradle-plugin.git'
+//                    developerConnection 'https://github.com/ph4r05/javacard-gradle-plugin.git'
+//                    url siteUrl
+//                }
+//            }
+//            whenConfigured {
+//                p ->
+//                    p.dependencies = p.dependencies.findAll {
+//                        dep -> (dep.artifactId.notIn(["junit", "hamcrest-all"]))
+//                    }
+//            }
+//        }
+//    }
+//}

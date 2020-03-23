@@ -87,8 +87,8 @@ class JavaCardPlugin implements Plugin<Project> {
                 extension.config.jcardSim = getJcardSim(properties)
             }
 
-            logger.debug("jckit location : ${extension.config.getJcKit()}")
-            logger.debug("jcardsim: ${extension.config.getJcardSim()}")
+            logger.info("jckit location : ${extension.config.getJcKit()}")
+            logger.info("jcardsim: ${extension.config.getJcardSim()}")
 
             configureClasspath(project, extension)
 
@@ -196,7 +196,7 @@ class JavaCardPlugin implements Plugin<Project> {
                 url "http://dl.bintray.com/bertrandmartel/maven"
             }
             project.repositories.add(buildRepo)
-            logger.debug("jcardsim repo added")
+            logger.info("jcardsim repo added")
         }
 
         def testClasspath = project.configurations.jcardsim + project.files(new File(GPTool.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()))
@@ -243,9 +243,9 @@ class JavaCardPlugin implements Plugin<Project> {
                 }
             }
 
-            compile sdkPath
+            implementation sdkPath
 
-            testCompile testClasspath
+            testImplementation testClasspath
         }
 
         // Exclude JC API for test runtime classpath as JCardSim embeds own version
@@ -260,10 +260,10 @@ class JavaCardPlugin implements Plugin<Project> {
 
             if (capItem.dependencies != null) {
                 capItem.dependencies.local.each { localItem ->
-                    project.dependencies.add("compile", project.files(localItem.jar))
+                    project.dependencies.add("implementation", project.files(localItem.jar))
                 }
                 capItem.dependencies.remote.each { remoteItem ->
-                    project.dependencies.add("compile", remoteItem)
+                    project.dependencies.add("implementation", remoteItem)
                 }
             }
         }

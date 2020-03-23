@@ -31,6 +31,9 @@ import groovy.io.FileType
 import org.gradle.api.DefaultTask
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.artifacts.ProjectDependency
+import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Internal
+import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
 
 /**
@@ -43,6 +46,8 @@ class JavaCardBuildTask extends DefaultTask {
     /**
      * default directory for output
      */
+    @Optional
+    @Input
     def jcBuildDir = project.buildDir.absolutePath + File.separator + "javacard"
 
     @TaskAction
@@ -55,10 +60,10 @@ class JavaCardBuildTask extends DefaultTask {
             def tloc = new File(pro.javacard.ant.JavaCard.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath())
             def tloc2 = new File(pro.javacard.VerifierError.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath())
             loc = tloc.absolutePath + File.pathSeparator + tloc2.absolutePath
-            logger.debug("javacard task location auto-detected : ${loc}")
+            logger.info("javacard task location auto-detected : ${loc}")
         }
 
-        logger.debug("javacard task location : ${loc}")
+        logger.info("javacard task location : ${loc}")
 
         ant.taskdef(name: 'javacard',
                 classname: 'pro.javacard.ant.JavaCard',
@@ -89,7 +94,7 @@ class JavaCardBuildTask extends DefaultTask {
                             }
                         }
 
-                        logger.debug("import attributes : " + [
+                        logger.info("import attributes : " + [
                                 exps: expFolder,
                                 jar : jarPath
                         ])
@@ -125,11 +130,23 @@ class JavaCardBuildTask extends DefaultTask {
         if (capItem.jckit?.trim()) {
             map["jckit"] = capItem.jckit
         }
+        if (capItem.targetsdk?.trim()) {
+            map["targetsdk"] = capItem.targetsdk
+        }
         if (capItem.sources?.trim()) {
             map["sources"] = capItem.sources
         }
+        if (capItem.sources2?.trim()) {
+            map["sources2"] = capItem.sources2
+        }
         if (capItem.classes?.trim()) {
             map["classes"] = capItem.classes
+        }
+        if (capItem.include?.trim()) {
+            map["include"] = capItem.include
+        }
+        if (capItem.exclude?.trim()) {
+            map["exclude"] = capItem.exclude
         }
         if (capItem.packageName?.trim()) {
             map["package"] = capItem.packageName
@@ -152,10 +169,13 @@ class JavaCardBuildTask extends DefaultTask {
         if (capItem.jca?.trim()) {
             map["jca"] = capItem.jca
         }
+        if (capItem.javaversion?.trim()) {
+            map["javaversion"] = capItem.javaversion
+        }
         map["verify"] = capItem.verify
         map["ints"] = capItem.ints
         map["debug"] = capItem.debug
-        logger.debug("cap attributes : $map")
+        logger.info("cap attributes : $map")
         return map
     }
 
@@ -170,7 +190,7 @@ class JavaCardBuildTask extends DefaultTask {
         if (jckit?.trim()) {
             map["jckit"] = jckit
         }
-        logger.debug("javacard attributes : $map")
+        logger.info("javacard attributes : $map")
         return map
     }
 
@@ -188,7 +208,7 @@ class JavaCardBuildTask extends DefaultTask {
         if (appletItem.aid?.trim()) {
             map["aid"] = appletItem.aid
         }
-        logger.debug("applet attributes : $map")
+        logger.info("applet attributes : $map")
         return map
     }
 
@@ -221,7 +241,7 @@ class JavaCardBuildTask extends DefaultTask {
         if (importItem.jar?.trim()) {
             map["jar"] = importItem.jar
         }
-        logger.debug("import attributes : $map")
+        logger.info("import attributes : $map")
         return map
     }
 
@@ -248,7 +268,7 @@ class JavaCardBuildTask extends DefaultTask {
                 throw new InvalidDataException()
             }
         }
-        logger.debug("import attributes : $map")
+        logger.info("import attributes : $map")
         return map
     }
 
@@ -279,7 +299,7 @@ class JavaCardBuildTask extends DefaultTask {
             capItem.sources = project.sourceSets.main.java.srcDirs[srcIndex]
         }
 
-        logger.debug("update source path to ${capItem.sources}")
+        logger.info("update source path to ${capItem.sources}")
     }
 
     /**
@@ -297,31 +317,31 @@ class JavaCardBuildTask extends DefaultTask {
             Utility.createFolder(jcBuildDir)
             if (!capItem.jca?.trim()) {
                 capItem.jca = "${jcBuildDir}${File.separator}${Utility.removeExtension(capItem.output)}.jca"
-                logger.debug("update jca path to $capItem.jca")
+                logger.info("update jca path to $capItem.jca")
             }
             if (!capItem.export?.trim()) {
                 capItem.export = "${jcBuildDir}${File.separator}${Utility.removeExtension(capItem.output)}.exp"
-                logger.debug("update export path to $capItem.export")
+                logger.info("update export path to $capItem.export")
             }
             if (!capItem.jar?.trim()) {
                 capItem.jar = "${capItem.export}/${capItem.packageName ?: Utility.removeExtension(capItem.output)}.jar"
-                logger.debug("update jar path to $capItem.jar")
+                logger.info("update jar path to $capItem.jar")
             }
             capItem.output = "${jcBuildDir}${File.separator}${capItem.output}"
         } else {
             if (!capItem.jca?.trim()) {
                 capItem.jca = "${jcBuildDir}${File.separator}${Utility.removeExtension(capItem.output)}.jca"
-                logger.debug("update jca path to $capItem.jca")
+                logger.info("update jca path to $capItem.jca")
                 Utility.createFolder(jcBuildDir)
             }
             if (!capItem.export?.trim()) {
                 capItem.export = "${jcBuildDir}${File.separator}${Utility.removeExtension(capItem.output)}.exp"
-                logger.debug("update export path to $capItem.export")
+                logger.info("update export path to $capItem.export")
                 Utility.createFolder(jcBuildDir)
             }
             if (!capItem.jar?.trim()) {
                 capItem.jar = "${capItem.export}/${capItem.packageName ?: Utility.removeExtension(capItem.output)}.jar"
-                logger.debug("update jar path to $capItem.jar")
+                logger.info("update jar path to $capItem.jar")
                 Utility.createFolder(jcBuildDir)
             }
         }
@@ -330,17 +350,17 @@ class JavaCardBuildTask extends DefaultTask {
         File jcaFile = new File(capItem.jca)
         if (!jcaFile.isAbsolute()) {
             capItem.jca = "${jcBuildDir}${File.separator}${capItem.jca}"
-            logger.debug("update jca path to $capItem.jca")
+            logger.info("update jca path to $capItem.jca")
         }
         File exportFile = new File(capItem.export)
         if (!exportFile.isAbsolute()) {
             capItem.export = "${jcBuildDir}${File.separator}${capItem.export}"
-            logger.debug("update export path to $capItem.export")
+            logger.info("update export path to $capItem.export")
         }
         File jarFile = new File(capItem.jar)
         if (!jarFile.isAbsolute()) {
             capItem.jar = "${jcBuildDir}${File.separator}${capItem.jar}"
-            logger.debug("update jar path to $capItem.jar")
+            logger.info("update jar path to $capItem.jar")
         }
     }
 
@@ -348,6 +368,7 @@ class JavaCardBuildTask extends DefaultTask {
      * Get JavaCard project object
      * @return
      */
+    @Internal
     JavaCard getJavaCard() {
         return project.javacard
     }

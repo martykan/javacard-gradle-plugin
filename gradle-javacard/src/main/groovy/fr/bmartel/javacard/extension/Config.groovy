@@ -126,9 +126,9 @@ class Config {
         }
     }
 
-/**
- * Check that a className is defined for each applet nested in cap.
- */
+    /**
+     * Check that a className is defined for each applet nested in cap.
+     */
     def checkAppletClass() {
         caps.each { capItem ->
             capItem.applets.each { appletItem ->
@@ -139,9 +139,9 @@ class Config {
         }
     }
 
-/**
- * Check that output field is defined.
- */
+    /**
+     * Check that output field is defined.
+     */
     def checkOutput() {
         caps.each { capItem ->
             if (!capItem.output?.trim()) {
@@ -150,9 +150,9 @@ class Config {
         }
     }
 
-/**
- * Check that jckit is defined either in the root javacard object or in all caps object if not in environment variable.
- */
+    /**
+     * Check that jckit is defined either in the root javacard object or in all caps object if not in environment variable.
+     */
     def checkJckit(Project project) {
         if (jckit?.trim()) {
             def folder = project.file(jckit)

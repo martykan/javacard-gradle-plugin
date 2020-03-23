@@ -37,9 +37,20 @@ class Cap {
     String jckit
 
     /**
+     * path to the target JavaCard SDK to be used for this CAP. Optional, value of jckit used by default.
+     * Allows to use a more recent converter to target older JavaCard platforms.
+     */
+    String targetsdk
+
+    /**
      * path to Java source code, to be compiled against the current JavaCard SDK. Either sources or classes is required.
      */
     String sources
+
+    /**
+     * additional sources to build per-platform applets. Optional.
+     */
+    String sources2
 
     /**
      * If true the sources are determined automatically. The first existing source dir in source sets is taken.
@@ -56,6 +67,16 @@ class Cap {
      * compiled class files will be put to classes folder, which is created if missing.
      */
     String classes
+
+    /**
+     * comma or space separated list of patterns of files that must be included.
+     */
+    String include
+
+    /**
+     * comma or space separated list of patterns of files that must be excluded.
+     */
+    String exclude
 
     /**
      * name of the package of the CAP file. Optional - set to the parent package of the applet class if left unspecified.
@@ -108,6 +129,11 @@ class Cap {
     boolean ints = false
 
     /**
+     * override the Java source and target version. Optional.
+     */
+    String javaversion
+
+    /**
      * list of applets.
      */
     List<Applet> applets = []
@@ -139,8 +165,16 @@ class Cap {
         this.jckit = path
     }
 
+    void targetsdk(String path) {
+        this.targetsdk = path
+    }
+
     void sources(String path) {
         this.sources = path
+    }
+
+    void sources2(String path) {
+        this.sources2 = path
     }
 
     void findSources(Boolean findSources) {
@@ -161,6 +195,14 @@ class Cap {
 
     void aid(String aid) {
         this.aid = aid
+    }
+
+    void include(String include) {
+        this.include = include
+    }
+
+    void exclude(String exclude) {
+        this.exclude = exclude
     }
 
     void output(String output) {
@@ -189,5 +231,9 @@ class Cap {
 
     void ints(boolean ints) {
         this.ints = ints
+    }
+
+    void javaversion(String javaversion) {
+        this.javaversion = javaversion
     }
 }
