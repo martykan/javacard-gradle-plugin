@@ -10,6 +10,9 @@ A Gradle plugin for building JavaCard applets.
 
 This plugin is a wrapper on [ant-javacard](https://github.com/martinpaljak/ant-javacard) and [Global Platform Pro](https://github.com/martinpaljak/GlobalPlatformPro), it is inspired by [gradle-javacard](https://github.com/fidesmo/gradle-javacard)
 
+This is a fork of a great work [bertrandmartel/javacard-gradle-plugin](https://github.com/bertrandmartel/javacard-gradle-plugin),
+we extended the work and added some improvements. 
+
 ## Features
 
 * build JavaCard applets (with the same capabilities as [ant-javacard](https://github.com/martinpaljak/ant-javacard))
@@ -123,7 +126,7 @@ The order of the scripts's apdu in `task.scripts` is respected.
 You can build custom tasks that launch [Global Platform Pro](https://github.com/martinpaljak/GlobalPlatformPro) tool :
 
 ```groovy
-task displayHelp(type: fr.bmartel.javacard.gp.GpExec) {
+task displayHelp(type: com.klinec.gradle.javacard.gp.GpExec) {
     description = 'display Global Platform pro help'
     group = 'help'
     args '-h'
