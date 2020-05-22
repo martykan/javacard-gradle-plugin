@@ -203,14 +203,10 @@ class JavaCardPlugin implements Plugin<Project> {
         def testClasspath = project.configurations.jcardsim + project.files(new File(GPTool.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()))
 
         def sdkPath = project.files(SdkUtils.getApiPath(extension.config.getJcKit(), logger))
-
         project.sourceSets {
-            main {
-                compileClasspath += project.configurations.sdk
-            }
             test {
-                compileClasspath += testClasspath
-                runtimeClasspath += testClasspath
+                compileClasspath.from(testClasspath)
+                runtimeClasspath.from(testClasspath)
             }
         }
 
@@ -244,14 +240,51 @@ class JavaCardPlugin implements Plugin<Project> {
                 }
             }
 
-            implementation sdkPath
-
             testImplementation testClasspath
+
+            // CompileOnly is required otherwise it gets added to the tests as well
+            // where it clashes with the JCardSim
+            compileOnly sdkPath
         }
 
-        // Exclude JC API for test runtime classpath as JCardSim embeds own version
+        // Remove JC API for test runtime classpath as JCardSim embeds own version and we need to have it first
+        logger.info("SDK path: ${sdkPath.getAsPath()}")
         project.sourceSets.test.runtimeClasspath = project.sourceSets.test.runtimeClasspath.filter {
             (it.path != sdkPath.getAsPath()) }
+
+        // Removal of the JC API from the test.compileClasspath
+        if (extension.config.fixClassPath) {
+            // project.sourceSets.test.compileClasspath is of type org.gradle.api.internal.file.collections.DefaultConfigurableFileCollection
+            // type can be infered by `.getClass()`
+            def gfrom = project.sourceSets.test.compileClasspath.getFrom()
+            logger.debug("Classpath getFrom() is: ${gfrom.getClass()}")
+            logger.debug("Classpath getFrom() contents: ${gfrom.join(':')}")
+
+            // This class path fix breaks modules dependencies as the list looses meta information
+            // about dependencies. In future release inspect how to reorder DefaultConfiguration
+            // and move JC API to the end of the list.
+            // Or: add JC API to the classpath as the last element here (omit compileOnly sdkPath)
+            def compileTestCp = new ArrayList<File>(project.sourceSets.test.compileClasspath.getFiles().asList())
+            def idxSdk = compileTestCp.findIndexOf { it.path == sdkPath.getAsPath() }
+            def idxSim = compileTestCp.findIndexOf { it.path.contains("jcardsim") }
+            if (idxSdk >= 0 && idxSim >= 0 && idxSim > idxSdk) {
+                logger.debug("Test compile classpath indices: sdk: ${idxSdk} jcardsim: ${idxSim}, cp: ${compileTestCp.join(':')}")
+                compileTestCp.remove(idxSdk)
+                compileTestCp.add(idxSim, sdkPath)
+
+                logger.debug("Test compile classpath pre: ${compileTestCp}")
+                project.sourceSets.test.compileClasspath = project.files(compileTestCp)
+                logger.debug("Test compile classpath post: ${project.sourceSets.test.compileClasspath.join(':')}")
+                logger.warn("ClassPath fix active, tests.compileClassPath was modified, information about project dependencies are lost. " +
+                        "Thus IDEs such as Idea can have problems importing the project with module dependencies. " +
+                        "To disable the classpath fix define javacard.config.fixClassPath false. ")
+            }
+        }
+
+        logger.debug("Main compile classpath: ${project.sourceSets.main.compileClasspath.join(':')}")
+        logger.debug("Main runtime classpath: ${project.sourceSets.main.runtimeClasspath.join(':')}")
+        logger.debug("Test compile classpath: ${project.sourceSets.test.compileClasspath.join(':')}")
+        logger.debug("Test runtime classpath: ${project.sourceSets.test.runtimeClasspath.join(':')}")
 
         project.test.testLogging {
             events "passed", "skipped", "failed"

@@ -44,6 +44,7 @@ class Config {
     boolean addImplicitJcardSim = true
     boolean addImplicitJcardSimJunit = true
     boolean debugGpPro = false
+    boolean fixClassPath = true
 
     /**
      * log level to set to "VERBOSE","DEBUG","INFO","WARN" or "ERROR", default is "INFO"
@@ -108,6 +109,10 @@ class Config {
 
     void debugGpPro(Boolean val) {
         this.debugGpPro = val
+    }
+
+    void fixClassPath(Boolean val) {
+        this.fixClassPath = val
     }
 
     /**
