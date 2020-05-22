@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'com.klinec'
-version '1.7.0'
+version '1.7.1'
 
 apply plugin: 'java'
 apply plugin: 'maven'
@@ -79,14 +79,14 @@ uploadArchives {
 
                 developers {
                     developer {
-                        id 'bertrandmartel'
-                        name 'Bertrand Martel'
-                        email 'bmartel.fr@gmail.com'
-                    }
-                    developer {
                         id 'ph4r05'
                         name 'Dusan Klinec'
                         email 'dusan.klinec@gmail.com'
+                    }
+                    developer {
+                        id 'bertrandmartel'
+                        name 'Bertrand Martel'
+                        email 'bmartel.fr@gmail.com'
                     }
                 }
             }
