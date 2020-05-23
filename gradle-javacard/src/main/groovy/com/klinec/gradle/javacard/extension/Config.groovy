@@ -40,7 +40,7 @@ class Config {
     String jckit
 
     Object jcardSim
-    boolean addSurrogateJcardSimRepo = true
+    boolean addSurrogateJcardSimRepo = false
     boolean addImplicitJcardSim = true
     boolean addImplicitJcardSimJunit = true
     boolean debugGpPro = false
