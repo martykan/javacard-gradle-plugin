@@ -13,6 +13,8 @@ This plugin is a wrapper on [ant-javacard](https://github.com/martinpaljak/ant-j
 This is a fork of a great work [bertrandmartel/javacard-gradle-plugin](https://github.com/bertrandmartel/javacard-gradle-plugin),
 we extended the work and added some improvements. 
 
+Gradle 6.4 is the minimal version supported.
+
 ## Features
 
 * build JavaCard applets (with the same capabilities as [ant-javacard](https://github.com/martinpaljak/ant-javacard))
@@ -20,7 +22,7 @@ we extended the work and added some improvements.
 * list applets
 * write quick testing scripts used to send apdu in a configurable way
 * expose `GpExec` task type that enables usage of [Global Platform Pro](https://github.com/martinpaljak/GlobalPlatformPro) tool inside Gradle
-* include [jcardsim 3.0.4](https://github.com/licel/jcardsim) and [JUnit 4.12](http://junit.org/junit4/) test dependency (clear distinction between JavaCard SDK & jcardsim SDK) 
+* include [jcardsim 3.0.5](https://github.com/licel/jcardsim) and [JUnit 4.12](http://junit.org/junit4/) test dependency (clear distinction between JavaCard SDK & jcardsim SDK) 
 * ability to specify key for delete/install/list tasks
 * possibility to add dependency between modules (exp & jar imported automatically)
 
@@ -30,18 +32,43 @@ we extended the work and added some improvements.
 buildscript {
     repositories {
         jcenter()
+        mavenCentral()
+
+        // Repository with Globalplatform, ant-javacard, gppro, gptools, etc.
+        maven {
+            url "https://javacard.pro/maven"
+        }
+        maven {
+            url "https://deadcode.me/mvn"
+        }
     }
     dependencies {
-        classpath 'com.klinec:gradle-javacard:1.7.1'
+        classpath 'com.klinec:gradle-javacard:1.7.2'
     }
 }
 
 apply plugin: 'javcom.klinec.gradle.javacardacard'
 
+repositories {
+    mavenCentral()
+    // mavenLocal() // for local maven repository if needed
+
+    // Repository with Globalplatform, ant-javacard, gppro, gptools, etc.
+    maven {
+        url  "https://dl.bintray.com/ph4r05/jcard"
+    }
+    maven {
+        url "https://javacard.pro/maven"
+    }
+    maven {
+        url "https://deadcode.me/mvn"
+    }
+}
+
 dependencies {
-    compile 'com.github.martinpaljak:gppro:19.06.16'
-    compile 'com.github.martinpaljak:gptool:19.06.16'
-    compile 'com.github.martinpaljak:globalplatformpro:19.06.16'
+    implementation 'com.github.martinpaljak:gppro:20.04.14'
+    implementation 'com.github.martinpaljak:gptool:20.04.14'
+    implementation 'com.github.martinpaljak:globalplatformpro:20.04.14'
 }
 
 javacard {
@@ -221,13 +248,24 @@ Note2 : you can add as many `local` or `remote` dependency as you want
   * config [Closure] - object that holds build configuration **Required**
     * jckit [String] - path to the JavaCard SDK that is used if individual cap does not specify one. Optional if cap defines one, required otherwise. The path is relative to the module
     * logLevel [String] - log level of ant-javacard task ("VERBOSE","DEBUG","INFO","WARN","ERROR"). default : "INFO"
+    * antClassPath [String] - option to specify path to the `ant-javacard.jar`
+    * jcardSim [dependency] - gradle dependency specifier for the JCardSim to use
+    * addSurrogateJcardSimRepo [Boolean], deprecated - if true, maven repository with old jcardsim releases is added to the project by the plugin.
+    * addImplicitJcardSim [Boolean] - adds JCardSim dependency to the project, true by default. Recommended: false
+    * addImplicitJcardSimJunit [Boolean] - adds Junit dependency to the jcardsim dependency. Recommended: false and define you own junit version
+    * debugGpPro [Boolean] - if true, adds `-d` param to the GPPro tasks for more verbose output
+    * fixClassPath [Boolean] - if true, tries to fix test classpath if JC `api_classic.jar` appears before jcardsim.
+    * installGpProArgs [List<String>] - List of additional GPPro args to add to the installJavaCard task
     * cap [Closure] - construct a CAP file **Required**
       * jckit [String] - path to the JavaCard SDK to be used for this CAP. *Optional if javacard defines one, required otherwise*
       * targetsdk [String] - path to the target JavaCard SDK to be used for this CAP. Optional, value of jckit used by default. Allows to use a more recent converter to target older JavaCard platforms.
       * sources [String] - path to Java source code, to be compiled against the current JavaCard SDK. **Required**
+      * sources2 [String] - additional sources to build per-platform applets. Optional.
       * findSources [boolean] - default:true, if true the sources are determined automatically. The first existing source dir in source sets is taken
       * defaultSources [boolean] - default:true, if true the first source dir from the source set is used. Otherwise the most recet (last)
       * classes [String] - path to pre-compiled class files to be assembled into a CAP file. If both classes and sources are specified, compiled class files will be put to classes folder, which is created if missing
+      * include [String] - comma or space separated list of patterns of files that must be included.
+      * exclude [String] - comma or space separated list of patterns of files that must be excluded.
       * packageName [String] - name of the package of the CAP file. Optional - set to the parent package of the applet class if left unspecified.
       * version [String] - version of the package. Optional - defaults to 0.0 if left unspecified.
       * aid [String] - AID (hex) of the package. Recommended - or set to the 5 first bytes of the applet AID if left unspecified.

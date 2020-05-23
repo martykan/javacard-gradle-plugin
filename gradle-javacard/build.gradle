@@ -7,7 +7,7 @@ plugins {
 }
 
 group 'com.klinec'
-version '1.7.1'
+version '1.7.2'
 
 apply plugin: 'java'
 apply plugin: 'maven'
@@ -19,15 +19,22 @@ sourceCompatibility = '1.8'
 repositories {
     jcenter()
     mavenCentral()
+    maven {
+        url "https://javacard.pro/maven"
+    }
+    maven {
+        url "https://deadcode.me/mvn"
+    }
     //mavenLocal()
 }
 
 dependencies {
     implementation gradleApi()
-    implementation 'com.github.martinpaljak:ant-javacard:19.05.08'
-    implementation 'com.github.martinpaljak:gppro:19.06.16'
-    implementation 'com.github.martinpaljak:gptool:19.06.16'
-    implementation 'com.github.martinpaljak:globalplatformpro:19.06.16'
+    implementation localGroovy()
+    implementation 'com.github.martinpaljak:ant-javacard:20.03.25'
+    implementation 'com.github.martinpaljak:gppro:20.04.14'
+    implementation 'com.github.martinpaljak:gptool:20.04.14'
+    implementation 'com.github.martinpaljak:globalplatformpro:20.04.14'
 
     testImplementation 'junit:junit:4.11'
     testImplementation 'org.hamcrest:hamcrest-all:1.3'
