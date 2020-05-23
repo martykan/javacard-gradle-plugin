@@ -221,13 +221,32 @@ class JavaCardBuildTask extends DefaultTask {
      * @param project
      * @return
      */
-    def getAllDependentProjects(project) {
-        def projectDependencies = project.configurations.runtime.getAllDependencies().withType(ProjectDependency)
-        def dependentProjects = projectDependencies*.dependencyProject
-        if (dependentProjects.size > 0) {
-            dependentProjects.each { dependentProjects += getAllDependentProjects(it) }
+    def getAllDependentProjects(project, configToUse=null) {
+        def configArr = []
+        if (configToUse != null) {
+            configArr.add(new Tuple(configToUse, project.configurations.findByName(configToUse)))
         }
-        return dependentProjects.unique()
+        else {
+            def configImpl = new Tuple("implementation", project.configurations.findByName("implementation"))
+            def configCompile = new Tuple("compile", project.configurations.findByName("compile"))
+            def configRuntime = new Tuple("runtime", project.configurations.findByName("runtime"))
+            configArr = [configImpl, configCompile, configRuntime]
+        }
+
+        for (config in configArr) {
+            if (config[1] == null){
+                continue
+            }
+
+            def projectDependencies = config[1].getAllDependencies().withType(ProjectDependency)
+            logger.debug("DependentProjects configuration: ${config[0]}:${config[1]}, projectDependencies: ${projectDependencies}")
+
+            def dependentProjects = projectDependencies*.dependencyProject
+            if (dependentProjects.size > 0) {
+                dependentProjects.each { dependentProjects += getAllDependentProjects(it, config[0]) }
+            }
+            return dependentProjects.unique()
+        }
     }
 
     /**
