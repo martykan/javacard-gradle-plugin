@@ -36,6 +36,8 @@ import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.TaskAction
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 /**
  * JavaCard task running the ant-javacard task from Martin Paljak
@@ -255,10 +257,13 @@ class JavaCardBuildTask extends DefaultTask {
     def buildRemoteItem(remote) {
         def map = [:]
         if (remote?.trim()) {
-            project.configurations.create(remote)
-            project.dependencies.add(remote, remote)
+            def confName = remote.replaceAll("[^a-zA-Z0-9_.-]", "-")
+            logger.debug("Remote dependency configuration: ${confName} remote: ${remote}")
 
-            def jarConf = project.configurations[remote].resolve()
+            project.configurations.create(confName)
+            project.dependencies.add(confName, remote)
+
+            def jarConf = project.configurations[confName].resolve()
 
             if (jarConf.size() > 0) {
                 Utility.unzip(jarConf[0].getAbsolutePath(), jarConf[0].getParent())
