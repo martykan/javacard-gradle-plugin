@@ -146,7 +146,7 @@ class JavaCardPlugin implements Plugin<Project> {
     }
 
     static def getDefaultJcardSim() {
-        return 'com.licel:jcardsim:3.0.4'
+        return 'com.klinec:jcardsim:3.0.5.11'
     }
 
     static def getDefaultJunit() {
@@ -180,7 +180,7 @@ class JavaCardPlugin implements Plugin<Project> {
             return System.getProperty("jcardsim.ver")
         }
 
-        return 'com.licel:jcardsim:3.0.4'
+        return 'com.klinec:jcardsim:3.0.5.11'
     }
 
     /**
@@ -207,6 +207,17 @@ class JavaCardPlugin implements Plugin<Project> {
             test {
                 compileClasspath.from(testClasspath)
                 runtimeClasspath.from(testClasspath)
+            }
+        }
+
+        extension.config.caps.each { capItem ->
+            if (capItem.dependencies != null) {
+                capItem.dependencies.local.each { localItem ->
+                    project.dependencies.add("implementation", project.files(localItem.jar))
+                }
+                capItem.dependencies.remote.each { remoteItem ->
+                    project.dependencies.add("implementation", remoteItem)
+                }
             }
         }
 
@@ -290,17 +301,7 @@ class JavaCardPlugin implements Plugin<Project> {
             events "passed", "skipped", "failed"
         }
 
-        extension.config.caps.each { capItem ->
 
-            if (capItem.dependencies != null) {
-                capItem.dependencies.local.each { localItem ->
-                    project.dependencies.add("implementation", project.files(localItem.jar))
-                }
-                capItem.dependencies.remote.each { remoteItem ->
-                    project.dependencies.add("implementation", remoteItem)
-                }
-            }
-        }
     }
 
     /**
