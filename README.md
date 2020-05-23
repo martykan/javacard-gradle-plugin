@@ -32,11 +32,11 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.klinec:gradle-javacard:1.6.9'
+        classpath 'com.klinec:gradle-javacard:1.7.1'
     }
 }
 
-apply plugin: 'javacard'
+apply plugin: 'javcom.klinec.gradle.javacardacard'
 
 dependencies {
     compile 'com.github.martinpaljak:gppro:19.06.16'
