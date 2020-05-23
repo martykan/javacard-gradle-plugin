@@ -25,6 +25,7 @@
 package com.klinec.gradle.javacard
 
 import com.klinec.gradle.javacard.common.CommonTest
+import com.klinec.gradle.javacard.utils.TestUtils
 import org.gradle.api.ProjectConfigurationException
 import org.junit.Test
 
@@ -83,33 +84,52 @@ class JavaCardBuildTaskTest extends CommonTest {
 
     @Test
     void sdkVersion212() {
-        runBuildTask(buildSdkConf(StaticConfig.getSdkPath("jc212_kit"), "applet", false))
+        if (TestUtils.compareJdk(System.getProperty("java.version"), "1.9") < 0) {
+            runBuildTask(buildSdkConf(StaticConfig.getSdkPath("jc212_kit"), "applet", false))
+        }
     }
 
     @Test
     void sdkVersion221() {
-        runBuildTask(buildSdkConf(StaticConfig.getSdkPath("jc221_kit"), "applet"))
+        if (TestUtils.compareJdk(System.getProperty("java.version"), "1.9") < 0) {
+            runBuildTask(buildSdkConf(StaticConfig.getSdkPath("jc221_kit"), "applet"))
+        }
     }
 
     @Test
     void sdkVersion222() {
-        runBuildTask(buildSdkConf(StaticConfig.getSdkPath("jc222_kit"), "applet1"))
+        if (TestUtils.compareJdk(System.getProperty("java.version"), "1.9") < 0) {
+            runBuildTask(buildSdkConf(StaticConfig.getSdkPath("jc222_kit"), "applet1"))
+        }
     }
 
 
     @Test
     void sdkVersion303() {
-        runBuildTask(buildSdkConf(StaticConfig.getSdkPath("jc303_kit"), "applet2"))
+        if (TestUtils.compareJdk(System.getProperty("java.version"), "12") < 0) {
+            runBuildTask(buildSdkConf(StaticConfig.getSdkPath("jc303_kit"), "applet2"))
+        }
     }
 
     @Test
     void sdkVersion304() {
-        runBuildTask(buildSdkConf(StaticConfig.getSdkPath("jc304_kit"), "applet3"))
+        if (TestUtils.compareJdk(System.getProperty("java.version"), "12") < 0) {
+            runBuildTask(buildSdkConf(StaticConfig.getSdkPath("jc304_kit"), "applet3"))
+        }
     }
 
     @Test
     void sdkVersion305u1() {
-        runBuildTask(buildSdkConf(StaticConfig.getSdkPath("jc305u1_kit"), "applet4"))
+        if (TestUtils.compareJdk(System.getProperty("java.version"), "12") < 0) {
+            runBuildTask(buildSdkConf(StaticConfig.getSdkPath("jc305u1_kit"), "applet4"))
+        }
+    }
+
+    @Test
+    void sdkVersion31() {
+        if (TestUtils.compareJdk(System.getProperty("java.version"), "15") < 0) {
+            runBuildTask(buildSdkConf(StaticConfig.getSdkPath("jc310b43_kit"), "applet5"))
+        }
     }
 
     @Test(expected = ProjectConfigurationException.class)

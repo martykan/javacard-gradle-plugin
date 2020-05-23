@@ -31,7 +31,7 @@ package com.klinec.gradle.javacard
  */
 class StaticConfig {
 
-    public static String SDK_PATH = StaticConfig.getSdkPath("jc222_kit")
+    public static String SDK_PATH = StaticConfig.getSdkPath("jc305u3_kit")
     /*
     public static String DEPENDENCY_PATH = System.getProperty("user.dir") + "/../../../test/libs/test.jar"
     public static String EXP_PATH = System.getProperty("user.dir") + "/../../../test/libs/test.exp"
