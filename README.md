@@ -39,7 +39,7 @@ buildscript {
         maven { url "https://deadcode.me/mvn" }
     }
     dependencies {
-        classpath 'com.klinec:gradle-javacard:1.7.2'
+        classpath 'com.klinec:gradle-javacard:1.7.3'
     }
 }
 
@@ -56,9 +56,9 @@ repositories {
 }
 
 dependencies {
-    implementation 'com.github.martinpaljak:gppro:20.04.14'
-    implementation 'com.github.martinpaljak:gptool:20.04.14'
-    implementation 'com.github.martinpaljak:globalplatformpro:20.04.14'
+    implementation 'com.github.martinpaljak:gppro:20.08.12'
+    implementation 'com.github.martinpaljak:gptool:20.08.12'
+    implementation 'com.github.martinpaljak:globalplatformpro:20.08.12'
 }
 
 javacard {
