@@ -24,11 +24,12 @@
 
 package com.klinec.gradle.javacard
 
-
+import com.klinec.gradle.javacard.extension.Applet
 import com.klinec.gradle.javacard.extension.JavaCard
 import com.klinec.gradle.javacard.gp.GpExec
 import com.klinec.gradle.javacard.util.SdkUtils
 import com.klinec.gradle.javacard.util.Utility
+import org.gradle.api.DefaultTask
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.Task
@@ -51,8 +52,10 @@ class JavaCardPlugin implements Plugin<Project> {
     static String LIST_TASK = 'listJavaCard'
     static String INSTALL_TASK = 'installJavaCard'
     static String BUILD_TASK = 'buildJavaCard'
+    static String DELETE_TASK = 'deleteJavaCard'
 
     static String GLOBAL_PLATFORM_GROUP = 'global platform'
+    static String GLOBAL_PLATFORM_HELPER_GROUP = 'global platform helpers'
 
     Task buildTask
 
@@ -312,22 +315,74 @@ class JavaCardPlugin implements Plugin<Project> {
      * @return
      */
     def createInstallTask(Project project, JavaCard extension) {
-        def install = project.tasks.create(name: INSTALL_TASK, type: GpExec)
         def args = []
-        extension.config.caps.each { capItem ->
-            args.add('--delete')
-            args.add(Utility.formatByteArray(capItem.aid))
-            args.add('--install')
+        def delTasks = []
 
+        extension.config.caps.eachWithIndex { capItem, capIdx ->
             File file = new File(capItem.output)
+            String file2Add
             if (!file.isAbsolute()) {
-                args.add(new File("${project.buildDir.absolutePath}${File.separator}javacard${File.separator}${capItem.output}").absolutePath)
+                file2Add = new File("${project.buildDir.absolutePath}${File.separator}javacard${File.separator}${capItem.output}").absolutePath
             } else {
-                args.add(new File(capItem.output).absolutePath)
+                file2Add = new File(capItem.output).absolutePath
             }
+
+            // Deletion tasks (package, applets)
+            def curDelTasksSpecs = []
+            def curDelTasks = []
+
+            // Delete each applet first
+            capItem.applets.eachWithIndex { Applet appletItem, int idx ->
+                def lstCls = appletItem.className.split("\\.").last().capitalize()
+                def taskName = "${DELETE_TASK}Applet${String.format("%02d", idx)}$lstCls"
+                def tmpArgs = ["--delete", appletItem.aid]
+                def taskDesc = "Removes applet \"${appletItem.className}\" (${appletItem.aid}) from the card"
+                curDelTasksSpecs.add(new Tuple3(taskName, tmpArgs, taskDesc))
+            }
+
+            // Then the package
+            def pkgAbrev = capItem.packageName.split("\\.").last().capitalize()
+            curDelTasksSpecs.add(new Tuple3(
+                    "${DELETE_TASK}Package${String.format("%02d", capIdx)}$pkgAbrev",
+                    ["--delete", capItem.aid],
+                    "Removes package \"${capItem.packageName}\" (${capItem.aid}) from the card"))
+
+            // Create tasks from specs, the last one if package del
+            curDelTasksSpecs.eachWithIndex { tpl, taskIdx ->
+                def (taskName, tmpArgs, taskDesc) = tpl
+                tmpArgs = Utility.addKeyArg(extension.key, extension.defaultKey, tmpArgs)
+                tmpArgs = Utility.addGpProArgs(extension, tmpArgs)
+                tmpArgs = Utility.addAuxGpProArgs(extension.config.installGpProArgs, tmpArgs)
+
+                def tmpTask = project.tasks.create(name: taskName, type: GpExec)
+                tmpTask.setIgnoreExitValue(true)
+
+                createGpExec(tmpTask, GLOBAL_PLATFORM_HELPER_GROUP, taskDesc, tmpArgs)
+                curDelTasks.add(tmpTask)
+            }
+
+            // Make package del depend on all applets del
+            def pkgDelTask = curDelTasks.last()
+            curDelTasks[0 ..< (curDelTasks.size()-1)].each { ctask ->
+                pkgDelTask.dependsOn ctask
+            }
+
+            // Package del agregation
+            delTasks.add(pkgDelTask)
+
+            args.add('--install')
+            args.add(file2Add)
         }
 
+        def pkgDel = project.tasks.create(name: "${DELETE_TASK}Packages", type: DefaultTask)
+        createTask(pkgDel, GLOBAL_PLATFORM_GROUP, "Removes all packages from the card")
+        delTasks.each { it ->
+            pkgDel.dependsOn it
+        }
+
+        def install = project.tasks.create(name: INSTALL_TASK, type: GpExec)
         install.dependsOn buildTask
+        install.dependsOn pkgDel
 
         args = Utility.addKeyArg(extension.key, extension.defaultKey, args)
         args = Utility.addGpProArgs(extension, args)
@@ -383,6 +438,13 @@ class JavaCardPlugin implements Plugin<Project> {
             doFirst {
                 println("gp ${arguments}")
             }
+        }
+    }
+
+    def createTask(Task task, String grp, String desc) {
+        task.configure {
+            group = grp
+            description = desc
         }
     }
 }

@@ -35,12 +35,8 @@ buildscript {
         mavenCentral()
 
         // Repository with Globalplatform, ant-javacard, gppro, gptools, etc.
-        maven {
-            url "https://javacard.pro/maven"
-        }
-        maven {
-            url "https://deadcode.me/mvn"
-        }
+        maven { url "https://javacard.pro/maven" }
+        maven { url "https://deadcode.me/mvn" }
     }
     dependencies {
         classpath 'com.klinec:gradle-javacard:1.7.2'
@@ -54,15 +50,9 @@ repositories {
     // mavenLocal() // for local maven repository if needed
 
     // Repository with Globalplatform, ant-javacard, gppro, gptools, etc.
-    maven {
-        url  "https://dl.bintray.com/ph4r05/jcard"
-    }
-    maven {
-        url "https://javacard.pro/maven"
-    }
-    maven {
-        url "https://deadcode.me/mvn"
-    }
+    maven { url  "https://dl.bintray.com/ph4r05/jcard" }
+    maven { url "https://javacard.pro/maven" }
+    maven { url "https://deadcode.me/mvn" }
 }
 
 dependencies {
