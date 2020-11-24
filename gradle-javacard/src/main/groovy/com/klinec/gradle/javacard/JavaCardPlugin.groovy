@@ -334,7 +334,7 @@ class JavaCardPlugin implements Plugin<Project> {
             // Delete each applet first
             capItem.applets.eachWithIndex { Applet appletItem, int idx ->
                 def lstCls = appletItem.className.split("\\.").last().capitalize()
-                def taskName = "${DELETE_TASK}Applet${String.format("%02d", idx)}$lstCls"
+                def taskName = "${DELETE_TASK}Package${String.format("%02d", capIdx)}Applet${String.format("%02d", idx)}$lstCls"
                 def tmpArgs = ["--delete", appletItem.aid]
                 def taskDesc = "Removes applet \"${appletItem.className}\" (${appletItem.aid}) from the card"
                 curDelTasksSpecs.add(new Tuple3(taskName, tmpArgs, taskDesc))
