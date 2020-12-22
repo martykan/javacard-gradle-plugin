@@ -53,6 +53,7 @@ class JavaCardPlugin implements Plugin<Project> {
     static String INSTALL_TASK = 'installJavaCard'
     static String BUILD_TASK = 'buildJavaCard'
     static String DELETE_TASK = 'deleteJavaCard'
+    static String PRE_CARD_TASK = 'preJavaCard'
 
     static String GLOBAL_PLATFORM_GROUP = 'global platform'
     static String GLOBAL_PLATFORM_HELPER_GROUP = 'global platform helpers'
@@ -119,12 +120,12 @@ class JavaCardPlugin implements Plugin<Project> {
                 }
             }
 
-            if (!project.tasks.findByName(INSTALL_TASK)) {
-                createInstallTask(project, extension)
-            }
-
             if (!project.tasks.findByName(LIST_TASK)) {
                 createListTask(project, extension)
+            }
+
+            if (!project.tasks.findByName(INSTALL_TASK)) {
+                createInstallTask(project, extension)
             }
         }
 
@@ -318,6 +319,9 @@ class JavaCardPlugin implements Plugin<Project> {
         def args = []
         def delTasks = []
 
+        def preCardTask = project.tasks.create(name: PRE_CARD_TASK, type: DefaultTask)
+        createTask(preCardTask, GLOBAL_PLATFORM_HELPER_GROUP, "Empty task called before card manipulation (for hooks)")
+
         extension.config.caps.eachWithIndex { capItem, capIdx ->
             File file = new File(capItem.output)
             String file2Add
@@ -363,11 +367,13 @@ class JavaCardPlugin implements Plugin<Project> {
 
             // Make package del depend on all applets del
             def pkgDelTask = curDelTasks.last()
+            pkgDelTask.mustRunAfter preCardTask
             curDelTasks[0 ..< (curDelTasks.size()-1)].each { ctask ->
                 pkgDelTask.dependsOn ctask
+                ctask.mustRunAfter preCardTask
             }
 
-            // Package del agregation
+            // Package del aggregation
             delTasks.add(pkgDelTask)
 
             args.add('--install')
@@ -376,12 +382,15 @@ class JavaCardPlugin implements Plugin<Project> {
 
         def pkgDel = project.tasks.create(name: "${DELETE_TASK}Packages", type: DefaultTask)
         createTask(pkgDel, GLOBAL_PLATFORM_GROUP, "Removes all packages from the card")
+
+        pkgDel.dependsOn preCardTask
         delTasks.each { it ->
             pkgDel.dependsOn it
         }
 
         def install = project.tasks.create(name: INSTALL_TASK, type: GpExec)
         install.dependsOn buildTask
+        install.dependsOn preCardTask
         install.dependsOn pkgDel
 
         args = Utility.addKeyArg(extension.key, extension.defaultKey, args)
