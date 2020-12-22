@@ -372,18 +372,18 @@ class JavaCardBuildTask extends DefaultTask {
         }
 
         //update jca & export when non absolute path are referenced
-        File jcaFile = new File(capItem.jca)
-        if (!jcaFile.isAbsolute()) {
+        File jcaFile = capItem.jca ? new File(capItem.jca) : null
+        if (!jcaFile?.isAbsolute()) {
             capItem.jca = "${jcBuildDir}${File.separator}${capItem.jca}"
             logger.info("update jca path to $capItem.jca")
         }
-        File exportFile = new File(capItem.export)
-        if (!exportFile.isAbsolute()) {
+        File exportFile = capItem.export ? new File(capItem.export) : null
+        if (!exportFile?.isAbsolute()) {
             capItem.export = "${jcBuildDir}${File.separator}${capItem.export}"
             logger.info("update export path to $capItem.export")
         }
-        File jarFile = new File(capItem.jar)
-        if (!jarFile.isAbsolute()) {
+        File jarFile = capItem.jar ? new File(capItem.jar) : null
+        if (!jarFile?.isAbsolute()) {
             capItem.jar = "${jcBuildDir}${File.separator}${capItem.jar}"
             logger.info("update jar path to $capItem.jar")
         }
