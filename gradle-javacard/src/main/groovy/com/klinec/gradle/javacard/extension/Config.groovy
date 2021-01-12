@@ -24,15 +24,20 @@
 
 package com.klinec.gradle.javacard.extension
 
+import org.gradle.api.Action
 import org.gradle.api.InvalidUserDataException
 import org.gradle.api.Project
+import org.gradle.api.model.ObjectFactory
+import org.gradle.util.ClosureBackedAction
+
+import javax.inject.Inject
 
 /**
  * JavaCard extension object (the same as defined in https://github.com/martinpaljak/ant-javacard#syntax
  *
  * @author Bertrand Martel
  */
-class Config {
+abstract class Config {
 
     /**
      * path to the JavaCard SDK that is used if individual cap does not specify one. Optional if cap defines one, required otherwise.
@@ -67,10 +72,12 @@ class Config {
     List<String> installGpProArgs = []
 
     Cap cap(Closure closure) {
-        def someCap = new Cap()
-        closure.delegate = someCap
-        closure.resolveStrategy = Closure.DELEGATE_FIRST
-        closure.call()
+        cap(ClosureBackedAction.of(closure))
+    }
+
+    Cap cap(Action<Cap> action) {
+        def someCap = objectFactory.newInstance(Cap)
+        action.execute(someCap)
         caps.add(someCap)
         return someCap
     }
@@ -211,4 +218,7 @@ class Config {
         }
         return ""
     }
+
+    @Inject
+    abstract ObjectFactory getObjectFactory()
 }

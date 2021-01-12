@@ -24,12 +24,18 @@
 
 package com.klinec.gradle.javacard.extension
 
+import org.gradle.api.Action
+import org.gradle.api.model.ObjectFactory
+import org.gradle.util.ClosureBackedAction
+
+import javax.inject.Inject
+
 /**
  * Cap extension object (the same as defined in https://github.com/martinpaljak/ant-javacard#syntax
  *
  * @author Bertrand Martel
  */
-class Cap {
+abstract class Cap {
 
     /**
      * path to the JavaCard SDK to be used for this CAP. Optional if javacard defines one, required otherwise.
@@ -144,19 +150,23 @@ class Cap {
     Dependencies dependencies
 
     Applet applet(Closure closure) {
-        def someApplet = new Applet()
-        closure.delegate = someApplet
-        closure.resolveStrategy = Closure.DELEGATE_FIRST
-        closure.call()
+        applet(ClosureBackedAction.of(closure))
+    }
+
+    Applet applet(Action<Applet> action) {
+        def someApplet = objectFactory.newInstance(Applet)
+        action.execute(someApplet)
         applets.add(someApplet)
         someApplet
     }
 
     void dependencies(Closure closure) {
-        def dependency = new Dependencies()
-        closure.delegate = dependency
-        closure.resolveStrategy = Closure.DELEGATE_FIRST
-        closure.call()
+        dependencies(ClosureBackedAction.of(closure))
+    }
+
+    void dependencies(Action<Dependencies> action) {
+        def dependency = objectFactory.newInstance(Dependencies)
+        action.execute(dependency)
         dependencies = dependency
         dependency
     }
@@ -236,4 +246,7 @@ class Cap {
     void javaversion(String javaversion) {
         this.javaversion = javaversion
     }
+
+    @Inject
+    abstract ObjectFactory getObjectFactory()
 }
