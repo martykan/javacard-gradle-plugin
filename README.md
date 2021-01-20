@@ -43,7 +43,7 @@ buildscript {
     }
 }
 
-apply plugin: 'javcom.klinec.gradle.javacardacard'
+apply plugin: 'com.klinec.gradle.javacard'
 
 repositories {
     mavenCentral()
