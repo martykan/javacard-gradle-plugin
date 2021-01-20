@@ -24,14 +24,19 @@
 
 package com.klinec.gradle.javacard.extension
 
+import org.gradle.api.Action
 import org.gradle.api.Project
+import org.gradle.api.model.ObjectFactory
+import org.gradle.util.ClosureBackedAction
+
+import javax.inject.Inject
 
 /**
  * JavaCard extension object (the same as defined in https://github.com/martinpaljak/ant-javacard#syntax
  *
  * @author Bertrand Martel
  */
-class JavaCard {
+abstract class JavaCard {
 
     Config config
 
@@ -44,37 +49,45 @@ class JavaCard {
     Test test
 
     Config config(Closure closure) {
-        def someConfig = new Config()
-        closure.delegate = someConfig
-        closure.resolveStrategy = Closure.DELEGATE_FIRST
-        closure.call()
+        config(ClosureBackedAction.of(closure))
+    }
+
+    Config config(Action<Config> action) {
+        def someConfig = objectFactory.newInstance(Config)
+        action.execute(someConfig)
         config = someConfig
         return someConfig
     }
 
     Scripts scripts(Closure closure) {
-        def someScript = new Scripts()
-        closure.delegate = someScript
-        closure.resolveStrategy = Closure.DELEGATE_FIRST
-        closure.call()
+        scripts(ClosureBackedAction.of(closure))
+    }
+
+    Scripts scripts(Action<Scripts> action) {
+        def someScript = objectFactory.newInstance(Scripts)
+        action.execute(someScript)
         scripts = someScript
         return someScript
     }
 
     Test test(Closure closure) {
-        def someTest = new Test()
-        closure.delegate = someTest
-        closure.resolveStrategy = Closure.DELEGATE_FIRST
-        closure.call()
+        test(ClosureBackedAction.of(closure))
+    }
+
+    Test test(Action<Test> action) {
+        def someTest = objectFactory.newInstance(Test)
+        action.execute(someTest)
         test = someTest
         return someTest
     }
 
     Key key(Closure closure) {
-        def someKey = new Key()
-        closure.delegate = someKey
-        closure.resolveStrategy = Closure.DELEGATE_FIRST
-        closure.call()
+        key(ClosureBackedAction.of(closure))
+    }
+
+    Key key(Action<Key> action) {
+        def someKey = objectFactory.newInstance(Key)
+        action.execute(someKey)
         key = someKey
         return someKey
     }
@@ -89,4 +102,7 @@ class JavaCard {
     def validate(Project project) {
         config.validate(project)
     }
+
+    @Inject
+    abstract ObjectFactory getObjectFactory()
 }

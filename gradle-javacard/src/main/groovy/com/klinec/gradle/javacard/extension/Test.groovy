@@ -1,15 +1,26 @@
 package com.klinec.gradle.javacard.extension
 
-class Test {
+import org.gradle.api.Action
+import org.gradle.api.model.ObjectFactory
+import org.gradle.util.ClosureBackedAction
+
+import javax.inject.Inject
+
+abstract class Test {
 
     TestDependencies dependencies
 
     void dependencies(Closure closure) {
-        def dependency = new TestDependencies()
-        closure.delegate = dependency
-        closure.resolveStrategy = Closure.DELEGATE_FIRST
-        closure.call()
+        dependencies(ClosureBackedAction.of(closure))
+    }
+
+    void dependencies(Action<TestDependencies> action) {
+        def dependency = objectFactory.newInstance(TestDependencies)
+        action.execute(dependency)
         dependencies = dependency
         dependency
     }
+
+    @Inject
+    abstract ObjectFactory getObjectFactory()
 }

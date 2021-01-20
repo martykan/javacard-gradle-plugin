@@ -24,12 +24,18 @@
 
 package com.klinec.gradle.javacard.extension
 
+import org.gradle.api.Action
+import org.gradle.api.model.ObjectFactory
+import org.gradle.util.ClosureBackedAction
+
+import javax.inject.Inject
+
 /**
  * scripts used to configure apdu batch request from a gradle task.
  *
  * @author Bertrand Martel
  */
-class Scripts {
+abstract class Scripts {
 
     /**
      * list of scripts.
@@ -42,20 +48,27 @@ class Scripts {
     List<Task> tasks = []
 
     Script script(Closure closure) {
-        def scriptInst = new Script()
-        closure.delegate = scriptInst
-        closure.resolveStrategy = Closure.DELEGATE_FIRST
-        closure.call()
+        script(ClosureBackedAction.of(closure))
+    }
+
+    Script script(Action<Script> action) {
+        def scriptInst = objectFactory.newInstance(Script)
+        action.execute(scriptInst)
         scripts.add(scriptInst)
         scriptInst
     }
 
     Task task(Closure closure) {
-        def taskInt = new Task()
-        closure.delegate = taskInt
-        closure.resolveStrategy = Closure.DELEGATE_FIRST
-        closure.call()
+        task(ClosureBackedAction.of(closure))
+    }
+
+    Task task(Action<Task> action) {
+        def taskInt = objectFactory.newInstance(Task)
+        action.execute(taskInt)
         tasks.add(taskInt)
         taskInt
     }
+
+    @Inject
+    abstract ObjectFactory getObjectFactory()
 }

@@ -24,12 +24,18 @@
 
 package com.klinec.gradle.javacard.extension
 
+import org.gradle.api.Action
+import org.gradle.api.model.ObjectFactory
+import org.gradle.util.ClosureBackedAction
+
+import javax.inject.Inject
+
 /**
  * Cap extension object (the same as defined in https://github.com/martinpaljak/ant-javacard#syntax
  *
  * @author Bertrand Martel
  */
-class Dependencies {
+abstract class Dependencies {
 
     /**
      * list of local exp/jar dependencies
@@ -46,11 +52,16 @@ class Dependencies {
     }
 
     Import local(Closure closure) {
-        def someLocal = new Import()
-        closure.delegate = someLocal
-        closure.resolveStrategy = Closure.DELEGATE_FIRST
-        closure.call()
+        local(ClosureBackedAction.of(closure))
+    }
+
+    Import local(Action<Import> action) {
+        def someLocal = objectFactory.newInstance(Import)
+        action.execute(someLocal)
         local.add(someLocal)
         return someLocal
     }
+
+    @Inject
+    abstract ObjectFactory getObjectFactory()
 }
