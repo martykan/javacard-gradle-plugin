@@ -100,8 +100,9 @@ class JavaCardPlugin implements Plugin<Project> {
                 extension.scripts.tasks.each { taskItem ->
 
                     def command = []
-
-                    command.add('-d')
+                    if (extension.config.isDebugGpPro()) {
+                        command.add('-d')
+                    }
 
                     taskItem.scripts.each { taskIncludedScript ->
                         extension.scripts.scripts.each { scriptItem ->
