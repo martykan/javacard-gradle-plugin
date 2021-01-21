@@ -39,7 +39,7 @@ buildscript {
         maven { url "https://deadcode.me/mvn" }
     }
     dependencies {
-        classpath 'com.klinec:gradle-javacard:1.7.4'
+        classpath 'com.klinec:gradle-javacard:1.8.0'
     }
 }
 
