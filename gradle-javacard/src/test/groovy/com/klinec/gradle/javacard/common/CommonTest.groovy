@@ -48,6 +48,7 @@ public class CommonTest {
             url "http://dl.bintray.com/bertrandmartel/maven"
         }
         project.repositories.add(buildRepo)
+        project.repositories.add(project.repositories.mavenCentral())
         project.evaluate()
         task.build()
         checkOutputFile(task)

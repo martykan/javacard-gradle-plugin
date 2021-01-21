@@ -24,11 +24,7 @@
 
 package com.klinec.gradle.javacard.gp
 
-import org.gradle.api.Project
-import org.gradle.api.file.FileCollection
 import org.gradle.api.tasks.JavaExec
-import pro.javacard.gp.GPTool
-
 /**
  * Task type that inherits JavaExec.
  *
@@ -42,19 +38,7 @@ class GpExec extends JavaExec {
         super()
         configure {
             main = GP_CLASSNAME
-            classpath = getGpClassPath(project)
+            classpath = project.configurations.gptool
         }
-    }
-
-    /**
-     * Get the classpath for Global Platform Pro
-     *
-     * @param project
-     * @return
-     */
-    def getGpClassPath(Project project) {
-        FileCollection gproClasspath = project.files(new File(GPTool.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()))
-        gproClasspath += project.sourceSets.main.runtimeClasspath
-        return gproClasspath
     }
 }

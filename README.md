@@ -55,12 +55,6 @@ repositories {
     maven { url "https://deadcode.me/mvn" }
 }
 
-dependencies {
-    implementation 'com.github.martinpaljak:gppro:20.08.12'
-    implementation 'com.github.martinpaljak:gptool:20.08.12'
-    implementation 'com.github.martinpaljak:globalplatformpro:20.08.12'
-}
-
 javacard {
 
     config {
@@ -95,6 +89,16 @@ javacard {
 ```
 
 plugin is available from `jcenter()` or `mavenCentral()`
+
+You can specify custom GPtool dependency with configuration `gptool`:
+
+```groovy
+dependencies {
+  gptool "com.github.martinpaljak:gppro:20.08.12"
+  gptool "com.github.martinpaljak:gptool:20.08.12"
+  gptool "com.github.martinpaljak:globalplatformpro:20.08.12"
+}
+```
 
 Check [this project](https://github.com/bertrandmartel/javacard-tutorial) for more usage examples
 
@@ -154,10 +158,6 @@ task displayHelp(type: com.klinec.gradle.javacard.gp.GpExec) {
 
 ```groovy
 apply plugin: 'javacard'
-
-dependencies {
-    compile 'com.github.martinpaljak:globalplatformpro:18.09.14'
-}
 
 repositories {
     maven {
@@ -240,6 +240,7 @@ Note2 : you can add as many `local` or `remote` dependency as you want
     * logLevel [String] - log level of ant-javacard task ("VERBOSE","DEBUG","INFO","WARN","ERROR"). default : "INFO"
     * antClassPath [String] - option to specify path to the `ant-javacard.jar`
     * jcardSim [dependency] - gradle dependency specifier for the JCardSim to use
+    * gptoolVersion [String] - enables you to specify GPtools version that will be used (in case you do not specify custom deps for `gptool` configuration)
     * addImplicitJcardSim [Boolean] - adds JCardSim dependency to the project, true by default. Recommended: false
     * addImplicitJcardSimJunit [Boolean] - adds Junit dependency to the jcardsim dependency. Recommended: false and define you own junit version
     * debugGpPro [Boolean] - if true, adds `-d` param to the GPPro tasks for more verbose output

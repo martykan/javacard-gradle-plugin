@@ -69,6 +69,7 @@ class JavaCardPlugin implements Plugin<Project> {
             jcardsim
             sctest
             sdk
+            gptool
         }
 
         project.afterEvaluate {
@@ -90,8 +91,13 @@ class JavaCardPlugin implements Plugin<Project> {
                 extension.config.jcardSim = getJcardSim(properties)
             }
 
+            if (!extension.config.gptoolVersion) {
+                extension.config.gptoolVersion = getGpToolVersion(properties)
+            }
+
             logger.info("jckit location : ${extension.config.getJcKit()}")
             logger.info("jcardsim: ${extension.config.getJcardSim()}")
+            logger.info("gptool version: ${extension.config.getGptoolVersion()}")
 
             configureClasspath(project, extension)
 
@@ -182,6 +188,18 @@ class JavaCardPlugin implements Plugin<Project> {
         return 'com.klinec:jcardsim:3.0.5.11'
     }
 
+    def getGpToolVersion(properties){
+        if (properties.getProperty('gptool.ver')?.trim()) {
+            return properties.getProperty('gptool.ver')
+        }
+
+        if (System.getProperty("gptool.ver")?.trim()){
+            return System.getProperty("gptool.ver")
+        }
+
+        return '20.08.12'
+    }
+
     /**
      * Configure source set / dependency class path for main, tests and smartcard test
      *
@@ -193,6 +211,15 @@ class JavaCardPlugin implements Plugin<Project> {
         if (extension.config.addSurrogateJcardSimRepo) {
             logger.warn("addSurrogateJcardSimRepo option is deprecated and has no effect")
         }
+
+        project.configurations.gptool.defaultDependencies {
+            it.add(project.dependencies.create("com.github.martinpaljak:gppro:${extension.config.getGptoolVersion()}"))
+            it.add(project.dependencies.create("com.github.martinpaljak:gptool:${extension.config.getGptoolVersion()}"))
+            it.add(project.dependencies.create("com.github.martinpaljak:globalplatformpro:${extension.config.getGptoolVersion()}"))
+        }
+
+        project.configurations.jcardsim.defaultDependencies {
+            it.add(project.dependencies.create(extension.config.getJcardSim()))
         }
 
         def testClasspath = project.configurations.jcardsim + project.files(new File(GPTool.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()))
@@ -242,7 +269,6 @@ class JavaCardPlugin implements Plugin<Project> {
                     logger.info("addImplicitJcardSim disabled jcardsim inclusion")
                 } else {
                     jcardsim extension.config.getJcardSim()
-                    // jcardsim getDefaultJcardSim()
                 }
             }
 
