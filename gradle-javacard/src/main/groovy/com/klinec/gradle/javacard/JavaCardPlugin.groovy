@@ -76,8 +76,6 @@ class JavaCardPlugin implements Plugin<Project> {
             //validate the extension properties
             extension.validate(project)
 
-            initDependencies(project)
-
             File propertyFile = project.rootProject.file('local.properties')
 
             Properties properties = new Properties()
@@ -145,10 +143,6 @@ class JavaCardPlugin implements Plugin<Project> {
         project.ext.javacardDir = "${project.buildDir.absolutePath}${File.separator}javacard"
     }
 
-    static def initDependencies(Project project) {
-        project.repositories.add(project.repositories.mavenCentral())
-    }
-
     static def getDefaultJcardSim() {
         return 'com.klinec:jcardsim:3.0.5.11'
     }
@@ -195,13 +189,9 @@ class JavaCardPlugin implements Plugin<Project> {
      * @return
      */
     def configureClasspath(Project project, JavaCard extension) {
-        if (extension.config.addSurrogateJcardSimRepo && !project.repositories.findByName("jcardsim")) {
-            def buildRepo = project.repositories.maven {
-                name 'jcardsim'
-                url "http://dl.bintray.com/bertrandmartel/maven"
-            }
-            project.repositories.add(buildRepo)
-            logger.info("jcardsim repo added")
+        if (extension.config.addSurrogateJcardSimRepo) {
+            logger.warn("addSurrogateJcardSimRepo option is deprecated and has no effect")
+        }
         }
 
         def testClasspath = project.configurations.jcardsim + project.files(new File(GPTool.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()))

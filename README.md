@@ -240,7 +240,6 @@ Note2 : you can add as many `local` or `remote` dependency as you want
     * logLevel [String] - log level of ant-javacard task ("VERBOSE","DEBUG","INFO","WARN","ERROR"). default : "INFO"
     * antClassPath [String] - option to specify path to the `ant-javacard.jar`
     * jcardSim [dependency] - gradle dependency specifier for the JCardSim to use
-    * addSurrogateJcardSimRepo [Boolean], deprecated - if true, maven repository with old jcardsim releases is added to the project by the plugin.
     * addImplicitJcardSim [Boolean] - adds JCardSim dependency to the project, true by default. Recommended: false
     * addImplicitJcardSimJunit [Boolean] - adds Junit dependency to the jcardsim dependency. Recommended: false and define you own junit version
     * debugGpPro [Boolean] - if true, adds `-d` param to the GPPro tasks for more verbose output

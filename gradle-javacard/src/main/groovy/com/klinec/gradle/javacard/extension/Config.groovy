@@ -45,10 +45,20 @@ abstract class Config {
     String jckit
 
     Object jcardSim
+
+    Object gptoolVersion
+
+    /**
+     * @deprecated Has no effect, will be removed in future release
+     */
     boolean addSurrogateJcardSimRepo = false
+
     boolean addImplicitJcardSim = true
+
     boolean addImplicitJcardSimJunit = true
+
     boolean debugGpPro = false
+
     boolean fixClassPath = true
 
     /**
@@ -102,6 +112,9 @@ abstract class Config {
         this.jcardSim = jcardSim
     }
 
+    /**
+     * @deprecated Has no effect, will be removed in future release
+     */
     void addSurrogateJcardSimRepo(Boolean addIt) {
         this.addSurrogateJcardSimRepo = addIt
     }
