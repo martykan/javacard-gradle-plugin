@@ -28,6 +28,15 @@ Gradle 6.4 is the minimal version supported.
 
 ## Usage 
 
+It may be the best to start with a simple HelloWorld project using this gradle plugin and demonstrating basic usage.
+
+Clone this [https://github.com/crocs-muni/javacard-gradle-template-edu](https://github.com/crocs-muni/javacard-gradle-template-edu)
+template project with `git clone --recursive`, and try:
+- `./gradlew buildJavaCard`
+- `./gradlew installJavaCard`
+- `./gradlew test`
+
+Example gradle script:
 ```groovy
 buildscript {
     repositories {
