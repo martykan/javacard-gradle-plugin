@@ -77,12 +77,12 @@ abstract class Cap {
     /**
      * comma or space separated list of patterns of files that must be included.
      */
-    String include
+    String includes
 
     /**
      * comma or space separated list of patterns of files that must be excluded.
      */
-    String exclude
+    String excludes
 
     /**
      * name of the package of the CAP file. Optional - set to the parent package of the applet class if left unspecified.
@@ -207,12 +207,12 @@ abstract class Cap {
         this.aid = aid
     }
 
-    void include(String include) {
-        this.include = include
+    void includes(String includes) {
+        this.includes = includes
     }
 
-    void exclude(String exclude) {
-        this.exclude = exclude
+    void excludes(String excludes) {
+        this.excludes = excludes
     }
 
     void output(String output) {

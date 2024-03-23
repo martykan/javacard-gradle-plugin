@@ -263,8 +263,8 @@ Note2 : you can add as many `local` or `remote` dependency as you want
       * findSources [boolean] - default:true, if true the sources are determined automatically. The first existing source dir in source sets is taken
       * defaultSources [boolean] - default:true, if true the first source dir from the source set is used. Otherwise the most recet (last)
       * classes [String] - path to pre-compiled class files to be assembled into a CAP file. If both classes and sources are specified, compiled class files will be put to classes folder, which is created if missing
-      * include [String] - comma or space separated list of patterns of files that must be included.
-      * exclude [String] - comma or space separated list of patterns of files that must be excluded.
+      * includes [String] - comma or space separated list of patterns of files that must be included.
+      * excludes [String] - comma or space separated list of patterns of files that must be excluded.
       * packageName [String] - name of the package of the CAP file. Optional - set to the parent package of the applet class if left unspecified.
       * version [String] - version of the package. Optional - defaults to 0.0 if left unspecified.
       * aid [String] - AID (hex) of the package. Recommended - or set to the 5 first bytes of the applet AID if left unspecified.

@@ -145,11 +145,11 @@ class JavaCardBuildTask extends DefaultTask {
         if (capItem.classes?.trim()) {
             map["classes"] = capItem.classes
         }
-        if (capItem.include?.trim()) {
-            map["include"] = capItem.include
+        if (capItem.includes?.trim()) {
+            map["includes"] = capItem.includes
         }
-        if (capItem.exclude?.trim()) {
-            map["exclude"] = capItem.exclude
+        if (capItem.excludes?.trim()) {
+            map["excludes"] = capItem.excludes
         }
         if (capItem.packageName?.trim()) {
             map["package"] = capItem.packageName
