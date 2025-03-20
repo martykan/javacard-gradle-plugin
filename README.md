@@ -1,9 +1,6 @@
 # JavaCard Gradle plugin
 
-[![Build Status](https://travis-ci.org/ph4r05/javacard-gradle-plugin.svg?branch=master)](https://travis-ci.org/ph4r05/javacard-gradle-plugin)
-[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.klinec/gradle-javacard/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.klinec/gradle-javacard)
-[![Coverage Status](https://coveralls.io/repos/github/ph4r05/javacard-gradle-plugin/badge.svg?branch=master)](https://coveralls.io/github/ph4r05/javacard-gradle-plugin?branch=master)
-[![Javadoc](http://javadoc-badge.appspot.com/com.klinec/gradle-javacard.svg?label=javadoc)](http://javadoc-badge.appspot.com/com.klinec/gradle-javacard)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/sk.neuromancer/gradle-javacard/badge.svg)](https://maven-badges.herokuapp.com/maven-central/sk.neuromancer/gradle-javacard)
 [![License](http://img.shields.io/:license-mit-blue.svg)](LICENSE.md)
 
 A Gradle plugin for building JavaCard applets.
@@ -11,7 +8,7 @@ A Gradle plugin for building JavaCard applets.
 This plugin is a wrapper on [ant-javacard](https://github.com/martinpaljak/ant-javacard) and [Global Platform Pro](https://github.com/martinpaljak/GlobalPlatformPro), it is inspired by [gradle-javacard](https://github.com/fidesmo/gradle-javacard)
 
 This is a fork of a great work [bertrandmartel/javacard-gradle-plugin](https://github.com/bertrandmartel/javacard-gradle-plugin),
-we extended the work and added some improvements. 
+and the extension of [ph4r05/javacard-gradle-plugin](https://github.com/ph4r05/javacard-gradle-plugin) with some fixes.
 
 Gradle 6.4 is the minimal version supported.
 
@@ -48,18 +45,17 @@ buildscript {
         maven { url "https://deadcode.me/mvn" }
     }
     dependencies {
-        classpath 'com.klinec:gradle-javacard:1.8.0'
+        classpath 'sk.neuromancer:gradle-javacard:1.8.1'
     }
 }
 
-apply plugin: 'com.klinec.gradle.javacard'
+apply plugin: 'sk.neuromancer.gradle.javacard'
 
 repositories {
     mavenCentral()
     // mavenLocal() // for local maven repository if needed
 
     // Repository with Globalplatform, ant-javacard, gppro, gptools, etc.
-    maven { url  "https://dl.bintray.com/ph4r05/jcard" }
     maven { url "https://javacard.pro/maven" }
     maven { url "https://deadcode.me/mvn" }
 }
@@ -97,7 +93,7 @@ javacard {
 }
 ```
 
-plugin is available from `jcenter()` or `mavenCentral()`
+plugin is available from `mavenCentral()`
 
 You can specify custom GPtool dependency with configuration `gptool`:
 
@@ -156,7 +152,7 @@ The order of the scripts's apdu in `task.scripts` is respected.
 You can build custom tasks that launch [Global Platform Pro](https://github.com/martinpaljak/GlobalPlatformPro) tool :
 
 ```groovy
-task displayHelp(type: com.klinec.gradle.javacard.gp.GpExec) {
+task displayHelp(type: sk.neuromancer.gradle.javacard.gp.GpExec) {
     description = 'display Global Platform pro help'
     group = 'help'
     args '-h'
@@ -306,7 +302,7 @@ Note2 : you can add as many `local` or `remote` dependency as you want
 test {
     dependencies {
         compile 'junit:junit:4.12'
-        compile 'com.licel:jcardsim:3.0.4'
+        compile 'com.klinec:jcardsim:3.0.6'
     }
 }
 ```

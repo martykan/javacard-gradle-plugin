@@ -1,34 +1,27 @@
-//apply plugin: 'com.github.dcendents.android-maven'
-//apply plugin: 'com.jfrog.bintray'
 plugins {
     id "groovy"
-    id "com.gradle.plugin-publish" version "0.11.0"
-    id "java-gradle-plugin"
+    id "com.gradle.plugin-publish" version '1.3.1'
+    id "signing"
 }
 
-group 'com.klinec'
-version '1.8.0'
+group = 'sk.neuromancer'
+version = '1.8.1'
 
-apply plugin: 'maven'
-apply plugin: 'signing'
 
 targetCompatibility = '1.8'
 sourceCompatibility = '1.8'
 
 repositories {
-    jcenter()
     mavenCentral()
     maven {
-        url "https://javacard.pro/maven"
+        url = "https://javacard.pro/maven"
     }
     maven {
-        url "https://deadcode.me/mvn"
+        url = "https://deadcode.me/mvn"
     }
-    //mavenLocal()
 }
 
 dependencies {
-    api gradleApi()
     implementation localGroovy()
     implementation 'com.github.martinpaljak:ant-javacard:20.03.25'
     implementation 'com.github.martinpaljak:gppro:20.08.12'
@@ -39,9 +32,6 @@ dependencies {
     testImplementation 'org.hamcrest:hamcrest-all:1.3'
 }
 
-def siteUrl = 'https://github.com/ph4r05/javacard-gradle-plugin'
-def gitUrl = 'https://github.com/ph4r05/javacard-gradle-plugin.git'
-
 signing {
     required {
         gradle.taskGraph.hasTask("uploadArchives")
@@ -49,122 +39,30 @@ signing {
     sign configurations.archives
 }
 
-// When uploading setup your ~/.gradle/gradle.properties
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: project.findProperty('ossrhUsername'), password: project.findProperty('ossrhPassword'))
-            }
-
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: project.findProperty('ossrhUsername'), password: project.findProperty('ossrhPassword'))
-            }
-
-            pom.project {
-                name 'gradle-javacard'
-                packaging 'jar'
-
-                description 'Gradle JavaCard plugin'
-                url 'https://github.com/ph4r05/javacard-gradle-plugin'
-
-                scm {
-                    connection 'scm:git:git://github.com/ph4r05/javacard-gradle-plugin'
-                    developerConnection 'scm:git:git@github.com:ph4r05/javacard-gradle-plugin.git'
-                    url 'https://github.com/ph4r05/javacard-gradle-plugin'
-                }
-
-                licenses {
-                    license {
-                        name 'MIT'
-                        url 'https://raw.githubusercontent.com/ph4r05/javacard-gradle-plugin/master/LICENSE'
-                    }
-                }
-
-                developers {
-                    developer {
-                        id 'ph4r05'
-                        name 'Dusan Klinec'
-                        email 'dusan.klinec@gmail.com'
-                    }
-                    developer {
-                        id 'bertrandmartel'
-                        name 'Bertrand Martel'
-                        email 'bmartel.fr@gmail.com'
-                    }
-                }
-            }
-        }
-    }
-}
-
-
-sourceSets {
-    main {
-        java {
-            srcDirs = [
-//                    'src/main/java/ant-javacard/src/main/java',
-//                    'src/main/java/global-platform-pro/src/main/java',
-//                    'src/main/java/apdu4j/src',
-//                    'src/main/java/jnasmartcardio/src/main/java'
-            ]
-            exclude '**/testapplets/**'
-        }
-    }
-}
 
 Object.metaClass.notIn = { Object collection ->
     !(delegate in collection)
 }
 
-task sourcesJar(type: Jar, dependsOn: classes) {
-    classifier = 'sources'
-    from sourceSets.main.allSource
-}
-
-task groovydocJar(type: Jar, dependsOn: groovydoc) {
-    classifier = 'javadoc'
-    from groovydoc.destinationDir
-}
-
-artifacts {
-    archives sourcesJar
-    archives groovydocJar
-}
-
 gradlePlugin {
+    website = 'https://github.com/J08nY/javacard-gradle-plugin'
+    vcsUrl = 'https://github.com/J08nY/javacard-gradle-plugin'
     plugins {
         javacard {
-            id = 'com.klinec.gradle.javacard'
-            implementationClass = 'com.klinec.gradle.javacard.JavaCardPlugin'
-        }
-    }
-}
-
-pluginBundle {
-    website = 'https://github.com/ph4r05/javacard-gradle-plugin'
-    vcsUrl = 'https://github.com/ph4r05/javacard-gradle-plugin'
-    description = 'Gradle JavaCard plugin'
-    tags = ['javacard']
-
-    plugins {
-        javacard {
+            id = 'sk.neuromancer.gradle.javacard'
+            implementationClass = 'sk.neuromancer.gradle.javacard.JavaCardPlugin'
             displayName = 'Gradle JavaCard plugin'
+            description = 'Gradle JavaCard plugin'
+            tags.set(['javacard'])
         }
     }
 }
 
-task generateJavadoc(type: Javadoc) {
-    source = sourceSets.main.allJava
-    classpath = configurations.compile
-    destinationDir = file("./doc/")
-}
 
 tasks.jar {
+    duplicatesStrategy = DuplicatesStrategy.WARN
     manifest {
-        attributes('Automatic-Module-Name': 'com.klinec.gradle.javacard')
+        attributes('Automatic-Module-Name': 'sk.neuromancer.gradle.javacard')
     }
 }
 
@@ -190,4 +88,8 @@ if (JavaVersion.current().isJava8Compatible()) {
             options.addStringOption('Xdoclint:none', '-quiet')
         }
     }
+}
+
+task showMeCache doLast() {
+    configurations.compileClasspath.each { println it }
 }
