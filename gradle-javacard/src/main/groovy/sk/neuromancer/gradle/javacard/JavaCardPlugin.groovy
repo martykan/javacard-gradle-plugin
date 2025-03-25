@@ -36,7 +36,7 @@ import org.gradle.api.Task
 import org.gradle.api.plugins.JavaPlugin
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import pro.javacard.gp.GPTool
+import pro.javacard.gptool.GPTool
 
 /**
  * JavaCard plugin.
@@ -185,7 +185,7 @@ class JavaCardPlugin implements Plugin<Project> {
             return System.getProperty("jcardsim.ver")
         }
 
-        return 'com.klinec:jcardsim:3.0.6.0'
+        return getDefaultJcardSim()
     }
 
     def getGpToolVersion(properties){
@@ -197,7 +197,7 @@ class JavaCardPlugin implements Plugin<Project> {
             return System.getProperty("gptool.ver")
         }
 
-        return '20.08.12'
+        return '24.10.15'
     }
 
     /**

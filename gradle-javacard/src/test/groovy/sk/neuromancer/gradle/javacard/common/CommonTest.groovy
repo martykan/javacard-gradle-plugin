@@ -45,7 +45,7 @@ public class CommonTest {
         configureProject(closure)
         project.repositories.add(project.repositories.maven {
             name 'build'
-            url "https://javacard.pro/maven"
+            url "https://mvn.javacard.pro/maven"
         })
         project.repositories.add(project.repositories.maven {
             name 'build'

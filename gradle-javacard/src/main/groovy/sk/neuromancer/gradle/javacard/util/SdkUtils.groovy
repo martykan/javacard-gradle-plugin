@@ -2,9 +2,11 @@ package sk.neuromancer.gradle.javacard.util
 
 import org.slf4j.Logger
 
+
 import java.nio.file.Paths
 
-import pro.javacard.JavaCardSDK
+import pro.javacard.sdk.SDKVersion
+import pro.javacard.sdk.JavaCardSDK
 
 /**
  * Javacard SDK utils taken from ant-javacard(https://github.com/martinpaljak/ant-javacard) by Martin Paljak
@@ -12,7 +14,7 @@ import pro.javacard.JavaCardSDK
 class SdkUtils {
 
     static class JavaCardKit {
-        JavaCardSDK.Version version = JavaCardSDK.Version.NONE
+        SDKVersion version = null
         String path = null
         JavaCardSDK sdk = null
     }
@@ -24,7 +26,7 @@ class SdkUtils {
      * @return api jar classpath
      */
     static getApiPath(extensionKit, Logger logger) {
-        def jckit = SdkUtils.detectSDK(extensionKit, logger)
+        def jckit = detectSDK(extensionKit, logger)
         def jars = jckit.sdk.getApiJars()
         return jars.isEmpty() ? null : jars.get(0)
     }
@@ -51,7 +53,8 @@ class SdkUtils {
             return detected
         }
 
-        detected.sdk = JavaCardSDK.detectSDK(real_path)
+        detected.sdk = JavaCardSDK.detectSDK(Paths.get(real_path)).get()
+        logger.warn("SDK detected: " + detected.sdk.exportDir)
         detected.version = detected.sdk?.version
         detected.path = real_path
 

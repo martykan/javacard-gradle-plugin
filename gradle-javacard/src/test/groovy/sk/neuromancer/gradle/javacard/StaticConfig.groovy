@@ -32,7 +32,6 @@ package sk.neuromancer.gradle.javacard
 class StaticConfig {
 
     public static String SDK_PATH = StaticConfig.getSdkPath("jc305u3_kit")
-    public static String JAVA_VERSION = "1.7"
 
     /*
     public static String DEPENDENCY_PATH = System.getProperty("user.dir") + "/../../../test/libs/test.jar"
@@ -41,7 +40,7 @@ class StaticConfig {
 
     public static repositories = {
         maven {
-            url 'https://javacard.pro/maven'
+            url 'https://mvn.javacard.pro/maven'
         }
         maven {
             url 'https://deadcode.me/mvn'
@@ -57,7 +56,6 @@ class StaticConfig {
             jckit SDK_PATH
             cap {
                 jckit SDK_PATH
-                javaversion JAVA_VERSION
                 packageName 'fr.bmartel.javacard'
                 version '0.1'
                 aid '01:02:03:04:05:06:07:08:09'
@@ -91,7 +89,6 @@ class StaticConfig {
             jckit SDK_PATH
             cap {
                 jckit SDK_PATH
-                javaversion JAVA_VERSION
                 packageName 'fr.bmartel.javacard'
                 version '0.1'
                 aid '01:02:03:04:05:06:07:08:09'
@@ -119,7 +116,6 @@ class StaticConfig {
             jckit SDK_PATH
             cap {
                 jckit SDK_PATH
-                javaversion JAVA_VERSION
                 packageName 'fr.bmartel.javacard'
                 version '0.1'
                 aid '01:02:03:04:05:06:07:08:09'
@@ -166,7 +162,6 @@ class StaticConfig {
             jckit SDK_PATH
             cap {
                 jckit SDK_PATH
-                javaversion JAVA_VERSION
                 packageName 'fr.bmartel.javacard'
                 version '0.1'
                 aid '01:02:03:04:05:06:07:08:09'
@@ -215,7 +210,6 @@ class StaticConfig {
             jckit SDK_PATH
             cap {
                 jckit SDK_PATH
-                javaversion JAVA_VERSION
                 packageName 'fr.bmartel.javacard'
                 version '0.1'
                 aid '01:02:03:04:05:06:07:08:09'
@@ -259,7 +253,6 @@ class StaticConfig {
             jckit SDK_PATH
             cap {
                 jckit SDK_PATH
-                javaversion JAVA_VERSION
                 packageName 'fr.bmartel.javacard'
                 version '0.1'
                 aid '01:02:03:04:05:06:07:08:09'
@@ -295,7 +288,6 @@ class StaticConfig {
             jckit SDK_PATH
             cap {
                 jckit SDK_PATH
-                javaversion JAVA_VERSION
                 packageName 'fr.bmartel.javacard'
                 version '0.1'
                 aid '01:02:03:04:05:06:07:08:09'
@@ -313,7 +305,6 @@ class StaticConfig {
             jckit SDK_PATH
             cap {
                 jckit SDK_PATH
-                javaversion JAVA_VERSION
                 packageName 'fr.bmartel.javacard'
                 version '0.1'
                 aid '01:02:03:04:05:06:07:08:09'
@@ -334,7 +325,6 @@ class StaticConfig {
         config {
             cap {
                 jckit SDK_PATH
-                javaversion JAVA_VERSION
                 packageName 'fr.bmartel.javacard'
                 version '0.1'
                 aid '01:02:03:04:05:06:07:08:09'
@@ -357,7 +347,6 @@ class StaticConfig {
         config {
             cap {
                 jckit SDK_PATH
-                javaversion JAVA_VERSION
                 packageName 'fr.bmartel.javacard'
                 version '0.1'
                 aid '01:02:03:04:05:06:07:08:09'
@@ -371,7 +360,6 @@ class StaticConfig {
             }
             cap {
                 jckit SDK_PATH
-                javaversion JAVA_VERSION
                 packageName 'fr.bmartel.javacard'
                 version '0.1'
                 aid '01:02:03:04:05:06:07:08:09'
@@ -425,7 +413,6 @@ class StaticConfig {
         config {
             cap {
                 jckit SDK_PATH
-                javaversion JAVA_VERSION
                 packageName 'fr.bmartel.javacard'
                 version '0.1'
                 aid '01:02:03:04:05:06:07:08:09'
@@ -443,7 +430,6 @@ class StaticConfig {
         config {
             cap {
                 jckit SDK_PATH
-                javaversion JAVA_VERSION
                 packageName 'fr.bmartel.javacard'
                 version '0.1'
                 aid '01:02:03:04:05:06:07:08:09'

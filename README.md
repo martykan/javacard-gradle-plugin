@@ -19,7 +19,7 @@ Gradle 6.4 is the minimal version supported.
 * list applets
 * write quick testing scripts used to send apdu in a configurable way
 * expose `GpExec` task type that enables usage of [Global Platform Pro](https://github.com/martinpaljak/GlobalPlatformPro) tool inside Gradle
-* include [jcardsim 3.0.5](https://github.com/licel/jcardsim) and [JUnit 4.12](http://junit.org/junit4/) test dependency (clear distinction between JavaCard SDK & jcardsim SDK) 
+* include [jcardsim 3.0.6.0](https://github.com/licel/jcardsim) and [JUnit 4.12](http://junit.org/junit4/) test dependency (clear distinction between JavaCard SDK & jcardsim SDK) 
 * ability to specify key for delete/install/list tasks
 * possibility to add dependency between modules (exp & jar imported automatically)
 
@@ -41,7 +41,7 @@ buildscript {
         mavenCentral()
 
         // Repository with Globalplatform, ant-javacard, gppro, gptools, etc.
-        maven { url "https://javacard.pro/maven" }
+        maven { url "https://mvn.javacard.pro/maven" }
         maven { url "https://deadcode.me/mvn" }
     }
     dependencies {
@@ -56,7 +56,7 @@ repositories {
     // mavenLocal() // for local maven repository if needed
 
     // Repository with Globalplatform, ant-javacard, gppro, gptools, etc.
-    maven { url "https://javacard.pro/maven" }
+    maven { url "https://mvn.javacard.pro/maven" }
     maven { url "https://deadcode.me/mvn" }
 }
 
@@ -99,9 +99,9 @@ You can specify custom GPtool dependency with configuration `gptool`:
 
 ```groovy
 dependencies {
-  gptool "com.github.martinpaljak:gppro:20.08.12"
-  gptool "com.github.martinpaljak:gptool:20.08.12"
-  gptool "com.github.martinpaljak:globalplatformpro:20.08.12"
+  gptool "com.github.martinpaljak:gppro:24.10.15"
+  gptool "com.github.martinpaljak:gptool:24.10.15"
+  gptool "com.github.martinpaljak:globalplatformpro:24.10.15"
 }
 ```
 
@@ -302,7 +302,7 @@ Note2 : you can add as many `local` or `remote` dependency as you want
 test {
     dependencies {
         compile 'junit:junit:4.12'
-        compile 'com.klinec:jcardsim:3.0.6'
+        compile 'com.klinec:jcardsim:3.0.6.0'
     }
 }
 ```

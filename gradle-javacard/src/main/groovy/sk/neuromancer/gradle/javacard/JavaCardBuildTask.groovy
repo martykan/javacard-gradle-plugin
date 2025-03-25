@@ -61,7 +61,7 @@ class JavaCardBuildTask extends DefaultTask {
         def loc = project.javacard.config.antClassPath
         if (loc == null || loc.trim() == "") {
             def tloc = new File(pro.javacard.ant.JavaCard.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath())
-            def tloc2 = new File(pro.javacard.VerifierError.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath())
+            def tloc2 = new File(pro.javacard.sdk.VerifierError.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath())
             loc = tloc.absolutePath + File.pathSeparator + tloc2.absolutePath
             logger.info("javacard task location auto-detected : ${loc}")
         }
@@ -173,7 +173,8 @@ class JavaCardBuildTask extends DefaultTask {
             map["jca"] = capItem.jca
         }
         if (capItem.javaversion?.trim()) {
-            map["javaversion"] = capItem.javaversion
+            logger.warn("javaversion cap attribute is ignored.")
+            //map["javaversion"] = capItem.javaversion
         }
         map["verify"] = capItem.verify
         map["ints"] = capItem.ints
@@ -385,7 +386,7 @@ class JavaCardBuildTask extends DefaultTask {
         File jarFile = capItem.jar ? new File(capItem.jar) : null
         if (!jarFile?.isAbsolute()) {
             capItem.jar = "${jcBuildDir}${File.separator}${capItem.jar}"
-            logger.info("update jar path to $capItem.jar")
+            logger.info("update jagetJavaCardr path to $capItem.jar")
         }
     }
 
