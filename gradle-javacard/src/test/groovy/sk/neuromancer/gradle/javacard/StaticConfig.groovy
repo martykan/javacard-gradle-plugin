@@ -24,6 +24,8 @@
 
 package sk.neuromancer.gradle.javacard
 
+import sk.neuromancer.gradle.javacard.utils.TestUtils
+
 /**
  * Static javacard configuration used in tests.
  *
@@ -31,7 +33,7 @@ package sk.neuromancer.gradle.javacard
  */
 class StaticConfig {
 
-    public static String SDK_PATH = StaticConfig.getSdkPath("jc305u3_kit")
+    public static String SDK_PATH = getDefaultSdkPath()
 
     /*
     public static String DEPENDENCY_PATH = System.getProperty("user.dir") + "/../../../test/libs/test.jar"
@@ -44,6 +46,19 @@ class StaticConfig {
         }
         maven {
             url 'https://deadcode.me/mvn'
+        }
+    }
+
+    public static String getDefaultSdkPath() {
+        String version = System.getProperty("java.version")
+        if (TestUtils.compareJdk(version, "1.9") < 0) {
+            return getSdkPath("jc222_kit")
+        } else if (TestUtils.compareJdk(version, "12") < 0) {
+            return getSdkPath("jc305u3_kit")
+        } else if (TestUtils.compareJdk(version, "18") < 0) {
+            return getSdkPath("jc320v24.0_kit")
+        } else {
+            return getSdkPath("jc320v24.0_kit")
         }
     }
 

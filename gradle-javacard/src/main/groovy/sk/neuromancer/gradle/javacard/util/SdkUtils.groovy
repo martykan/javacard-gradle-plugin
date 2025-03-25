@@ -54,7 +54,7 @@ class SdkUtils {
         }
 
         detected.sdk = JavaCardSDK.detectSDK(Paths.get(real_path)).get()
-        logger.warn("SDK detected: " + detected.sdk.exportDir)
+        logger.info("SDK detected, export dir: " + detected.sdk.exportDir)
         detected.version = detected.sdk?.version
         detected.path = real_path
 
