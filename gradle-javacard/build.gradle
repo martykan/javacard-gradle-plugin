@@ -23,7 +23,7 @@ repositories {
 
 dependencies {
     implementation localGroovy()
-    implementation 'com.github.martinpaljak:ant-javacard:24.11.19'
+    implementation 'com.github.martinpaljak:ant-javacard:23.04.03'
     implementation 'com.github.martinpaljak:gppro:24.10.15'
     implementation 'com.github.martinpaljak:gptool:24.10.15'
     implementation 'com.github.martinpaljak:globalplatformpro:24.10.15'
