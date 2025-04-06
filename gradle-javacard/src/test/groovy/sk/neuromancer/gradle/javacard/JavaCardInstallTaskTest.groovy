@@ -26,7 +26,7 @@ class JavaCardInstallTaskTest extends CommonTest {
                                         '--key-mac', '404142434445464748494A4B4C4D4E4F',
                                         '--key-dek', '404142434445464748494A4B4C4D4E4F'
         ])
-        assertEquals(installTask.mainClass.get(), 'pro.javacard.gp.GPTool')
+        assertEquals(installTask.mainClass.get(), 'pro.javacard.gptool.GPTool')
         //installTask.exec()
     }
 }

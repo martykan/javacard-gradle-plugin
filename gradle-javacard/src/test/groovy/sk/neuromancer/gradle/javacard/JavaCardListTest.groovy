@@ -22,7 +22,7 @@ class JavaCardListTest extends CommonTest {
                                      '--key-enc', '404142434445464748494A4B4C4D4E4F',
                                      '--key-mac', '404142434445464748494A4B4C4D4E4F',
                                      '--key-dek', '404142434445464748494A4B4C4D4E4F'])
-        assertEquals(listTask.mainClass.get(), 'pro.javacard.gp.GPTool')
+        assertEquals(listTask.mainClass.get(), 'pro.javacard.gptool.GPTool')
 
         //listTask.exec()
     }

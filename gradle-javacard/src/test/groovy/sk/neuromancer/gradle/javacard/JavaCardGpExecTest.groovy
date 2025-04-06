@@ -18,6 +18,6 @@ class JavaCardGpExecTest extends CommonTest {
         assertTrue(listTask ? true : false)
         assertTrue(listTask instanceof JavaExec)
         assertTrue(listTask instanceof GpExec)
-        assertEquals(listTask.mainClass.get(), 'pro.javacard.gp.GPTool')
+        assertEquals(listTask.mainClass.get(), 'pro.javacard.gptool.GPTool')
     }
 }
